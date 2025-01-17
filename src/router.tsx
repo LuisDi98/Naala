@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "./layouts/layout"
+import Layout from "./layouts/layout";
+import { Main } from "./screens";
 
 export const router = createBrowserRouter([
   {
@@ -8,7 +9,7 @@ export const router = createBrowserRouter([
     children:[
       {
         index: true,
-        // element: <LandingPage />,
+        element: <Main/>,
       },
     ]
   },
