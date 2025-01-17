@@ -1,5 +1,5 @@
-import { Box, Input, Flex, Text } from "@chakra-ui/react";
-import { Lock } from "lucide-react";
+import { Box, Input, Flex, Text, IconButton } from "@chakra-ui/react";
+import { Lock, ArrowRight } from "lucide-react";
 
 export default function PinInputField() {
   return (
@@ -11,8 +11,8 @@ export default function PinInputField() {
       bg="white"
       p={4}
     >
-      <Text fontSize="2xl" fontWeight="medium">
-        Ingresá <b>tu pin</b>
+      <Text fontSize="6xl" fontWeight="regular">
+        Ingresá <b className="font-bold">tu pin</b>
       </Text>
       <Box
         mt={6}
@@ -39,7 +39,17 @@ export default function PinInputField() {
             variant="unstyled"
             ml={3}
             fontSize="lg"
+            flex="1"
           />
+          <IconButton
+            aria-label="Enviar"
+            variant="ghost"
+            color="black"
+            _hover={{ bg: "gray.200" }}
+            ml={2}
+          >
+            <ArrowRight size={20} />
+          </IconButton>
         </Flex>
       </Box>
     </Flex>
