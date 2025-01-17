@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/layout";
-import { Home } from "./screens";
+import { Home, Pin } from "./screens";
 
 export const router = createBrowserRouter([
   {
@@ -11,6 +11,10 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home/>,
       },
+      {
+        path: "/pin",
+        element: <Pin/>,
+      }
     ]
   },
 ]);
