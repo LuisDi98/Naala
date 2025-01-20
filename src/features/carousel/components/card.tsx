@@ -1,5 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import Img from "../../../assets/Naala_assets/CASA_03_PLANTA_BAJA_1.png";
+
 interface PropertyCardProps {
   name: string;
   image: string;

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/layout";
-import { Home, Pin } from "./screens";
+import { Home, Pin, Model } from "./screens";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +14,10 @@ export const router = createBrowserRouter([
       {
         path: "/pin",
         element: <Pin/>,
+      },
+      {
+        path : "/:model",
+        element: <Model/>
       }
     ]
   },

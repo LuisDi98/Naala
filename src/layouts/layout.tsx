@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "@/features/header";
-import { Footer } from "@/features/footer";
 
 export default function Layout() {
   return (
@@ -9,7 +8,6 @@ export default function Layout() {
       <main className="min-h-screen">
         <Outlet />
       </main>
-      <Footer />
     </div>
   );
 }

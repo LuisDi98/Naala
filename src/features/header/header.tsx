@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { Menu, X } from 'lucide-react'
+import Logo from "../../assets/Naala_assets/naala-logo.png"
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -25,10 +26,10 @@ export default function Header() {
   ]
 
   return (
-    <header className="w-full px-4 py-6 md:py-10 bg-black text-white">
+    <header className="w-full px-4 py-4 md:py-4 bg-black text-white">
       <nav className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold">
-          LOGO
+          <img width={150} src={Logo} alt="" />
         </Link>
         
         <button
@@ -48,7 +49,7 @@ export default function Header() {
             <li key={index} className="w-full md:w-auto">
               <Link 
                 to={href} 
-                className="block py-2 text-center hover:text-gray-400 transition"
+                className="block py-2 text-center text-lg hover:text-gray-400 transition"
                 onClick={() => setMenuOpen(false)}
               >
                 {text}
