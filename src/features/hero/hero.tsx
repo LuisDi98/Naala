@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
-    <div className="relative flex items-end justify-start w-full h-[80vh]">
+    <div className="relative flex items-end justify-start w-full h-[81vh]">
       {/* Background with opacity */}
       <div
         className="absolute inset-0"
