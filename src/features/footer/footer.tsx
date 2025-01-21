@@ -1,7 +1,7 @@
 "use client"
 
 import { Box, Button, Container, Flex, Text } from "@chakra-ui/react"
-import { Home, Save, Printer } from "lucide-react"
+import { Home, Save, Printer, Send } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -38,7 +38,8 @@ export default function Footer() {
               <Text>Valor de extras: 3,000</Text>
             </Flex>
             <Text>Valor del modelo: 143,000</Text>
-            <Button colorScheme="black" size="lg">
+            <Button bgColor="#000" color="#fff" size="lg" p={2}>
+              <Send size={8}/>
               Terminar
             </Button>
           </Flex>

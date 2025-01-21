@@ -1,16 +1,33 @@
-"use client"
+"use client";
 
-import { Input, Box, Button, Container, Flex, Heading, Image, Text } from "@chakra-ui/react"
-import { InputGroup } from "@/components/ui/input-group"
-import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/accordion"
-import { Search, Edit } from "lucide-react"
-import { Footer } from "../features/footer"
+import {
+  Input,
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Image,
+  Text,
+} from "@chakra-ui/react";
+import { InputGroup } from "@/components/ui/input-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from "@chakra-ui/accordion";
+import { Search, Edit, Expand } from "lucide-react";
+import { Footer } from "../features/footer";
+import Bg from "../assets/Naala_assets/bg_4.png"
 
 export default function ModelViewer() {
   return (
     <Flex direction="column" minH="100vh">
       {/* Header */}
-      <Box p={4} borderBottom="1px" borderColor="gray.200">
+      <Box p={4} borderBottom="1px">
         <Container maxW="container.xl">
           <Heading size="lg">Modelo 2</Heading>
         </Container>
@@ -22,7 +39,7 @@ export default function ModelViewer() {
         <Box flex={1} position="relative" p={4}>
           <Box position="relative" borderRadius="lg" overflow="hidden">
             <Image
-              src="https://images.unsplash.com/photo-1601758123927-2fba5c4c0cf7"
+              src={Bg}
               alt="Modelo 2 Interior"
               width="100%"
               height="auto"
@@ -34,14 +51,13 @@ export default function ModelViewer() {
               size="sm"
               colorScheme="blackAlpha"
             >
-              <Edit size={16} />
-              Editar
+              <Expand color="#fff" />
             </Button>
           </Box>
         </Box>
 
         {/* Sidebar */}
-        <Box w={{ base: "100%", lg: "400px" }} p={4} bg="gray.50">
+        <Box w={{ base: "100%", lg: "400px" }} p={4} bg="transparent">
           <Flex direction="column" gap={4}>
             {/* Search */}
             <InputGroup startElement={<Search size={20} color="gray.400" />}>
@@ -55,15 +71,39 @@ export default function ModelViewer() {
             </Flex>
 
             {/* Accordion Sections */}
-            <Accordion allowMultiple>
+            <Accordion className="gap-8 p-8">
               {[
-                { title: "Acabado de muebles", items: ["Arctic Grey", "Chalk", "Aventurine Green Metallic", "Ice Grey Metallic"] },
-                { title: "Extras Cocina", items: ["Isla central", "Despensa adicional"] },
-                { title: "Previstas eléctricas", items: ["Tomacorrientes adicionales", "Iluminación LED"] },
-                { title: "Acabados enchapes", items: ["Porcelanato premium", "Mármol"] },
-                { title: "Equipamiento", items: ["Electrodomésticos", "Sistema de seguridad"] },
+                {
+                  title: "Acabado de muebles",
+                  items: [
+                    "Arctic Grey",
+                    "Chalk",
+                    "Aventurine Green Metallic",
+                    "Ice Grey Metallic",
+                  ],
+                },
+                {
+                  title: "Extras Cocina",
+                  items: ["Isla central", "Despensa adicional"],
+                },
+                {
+                  title: "Previstas eléctricas",
+                  items: ["Tomacorrientes adicionales", "Iluminación LED"],
+                },
+                {
+                  title: "Acabados enchapes",
+                  items: ["Porcelanato premium", "Mármol"],
+                },
+                {
+                  title: "Equipamiento",
+                  items: ["Electrodomésticos", "Sistema de seguridad"],
+                },
               ].map((section, index) => (
-                <AccordionItem key={index}>
+                <AccordionItem
+                  key={index}
+                  bg="#FFF"
+                  className="mt-4 p-4 rounded-lg"
+                >
                   <h2>
                     <AccordionButton>
                       <Box flex={1} textAlign="left">
@@ -75,9 +115,7 @@ export default function ModelViewer() {
                   <AccordionPanel>
                     <Flex direction="column" gap={2}>
                       {section.items.map((item) => (
-                        <Button key={item} variant="outline" justifyContent="space-between" w="100%" bg="white">
-                          {item}
-                        </Button>
+                        <Checkbox variant="subtle">{item}</Checkbox>
                       ))}
                     </Flex>
                   </AccordionPanel>
@@ -89,7 +127,7 @@ export default function ModelViewer() {
       </Flex>
 
       {/* Footer */}
-      <Footer/>
+      <Footer />
     </Flex>
-  )
+  );
 }

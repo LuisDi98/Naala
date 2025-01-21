@@ -1,7 +1,7 @@
 import BG from "../../assets/Naala_assets/bg_1.png";
 import { Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-
+import { data } from "../../index.css"
 export default function Hero() {
   return (
     <div className="relative flex items-end justify-start w-full h-[81vh]">
@@ -31,7 +31,7 @@ export default function Hero() {
           <Link to="/">Modelos</Link>
         </Button>
         <p className="text-center text-white">
-          En Naala, encontrarás la casa de tus sueños, con la mejor calidad y
+          Si bien nos esforzamos por ofrecer visualización precisa en el configurador, algunas opciones pueden no representarse correctament en este momento.
         </p>
       </div>
     </div>
