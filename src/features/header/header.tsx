@@ -7,11 +7,7 @@ export default function Header() {
 
   const links = [
     {
-      href: "/",
-      text: "Amenidades",
-    },
-    {
-      href: "/",
+      href: "https://maps.app.goo.gl/CMRA6WFtrn2EDhQY6",
       text: "Ubicación",
     },
     {

@@ -5,11 +5,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "./";
 
 const properties = [
-  { id: 1, name: "Modelo 2", image: "/placeholder.svg?height=400&width=600" },
-  { id: 2, name: "Modelo 3a", image: "/placeholder.svg?height=400&width=600" },
-  { id: 3, name: "Modelo 3b", image: "/placeholder.svg?height=400&width=600" },
-  { id: 4, name: "Modelo 4", image: "/placeholder.svg?height=400&width=600" },
-  { id: 5, name: "Modelo 5", image: "/placeholder.svg?height=400&width=600" },
+  { id: 1, name: "Modelo 1", image: "/modelo-1.png" },
+  { id: 2, name: "Modelo 2", image: "/modelo-2.png" },
+  { id: 3, name: "Modelo 3a", image: "/modelo-3.png" },
+  { id: 4, name: "Modelo 3b", image: "/modelo-3.png" },
+  { id: 5, name: "Modelo 3c", image: "/modelo-3.png" },
 ];
 
 export default function CustomCarousel() {
