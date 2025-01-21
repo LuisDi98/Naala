@@ -19,38 +19,39 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/accordion";
-import { Search, Edit, Expand } from "lucide-react";
+import { Search, Expand } from "lucide-react";
 import { Footer } from "../features/footer";
-import Bg from "../assets/Naala_assets/bg_4.png"
+import { useLocation } from "react-router-dom"; // Dynamically get pathname
+import { modelsData } from "../data/form"; // Import the hardcoded data
+import Bg from "../assets/Naala_assets/bg_4.png";
 
 export default function ModelViewer() {
+  const { pathname } = useLocation();
+  const modelName = pathname.split("/").pop(); // Extract model name from the path
+  const model = modelsData.find((m) => m.model === modelName);
+
+  if (!model) {
+    return (
+      <Flex direction="column" minH="100vh">
+        <Box p={6} textAlign="center">
+          <Text fontSize="2xl" color="red.500">
+            Modelo "{modelName}" no encontrado.
+          </Text>
+        </Box>
+      </Flex>
+    );
+  }
+
   return (
     <Flex direction="column" minH="100vh">
-      {/* Header */}
-      <Box p={4} borderBottom="1px">
-        <Container maxW="container.xl">
-          <Heading size="lg">Modelo 2</Heading>
-        </Container>
-      </Box>
 
       {/* Main Content */}
       <Flex flex={1} direction={{ base: "column", lg: "row" }}>
         {/* Image Section */}
         <Box flex={1} position="relative" p={4}>
           <Box position="relative" borderRadius="lg" overflow="hidden">
-            <Image
-              src={Bg}
-              alt="Modelo 2 Interior"
-              width="100%"
-              height="auto"
-            />
-            <Button
-              position="absolute"
-              top={4}
-              right={4}
-              size="sm"
-              colorScheme="blackAlpha"
-            >
+            <Image src={Bg} alt={`${model.model} Interior`} width="100%" height="auto" />
+            <Button position="absolute" top={4} right={4} size="sm" colorScheme="blackAlpha">
               <Expand color="#fff" />
             </Button>
           </Box>
@@ -72,33 +73,7 @@ export default function ModelViewer() {
 
             {/* Accordion Sections */}
             <Accordion className="gap-8 p-8">
-              {[
-                {
-                  title: "Acabado de muebles",
-                  items: [
-                    "Arctic Grey",
-                    "Chalk",
-                    "Aventurine Green Metallic",
-                    "Ice Grey Metallic",
-                  ],
-                },
-                {
-                  title: "Extras Cocina",
-                  items: ["Isla central", "Despensa adicional"],
-                },
-                {
-                  title: "Previstas eléctricas",
-                  items: ["Tomacorrientes adicionales", "Iluminación LED"],
-                },
-                {
-                  title: "Acabados enchapes",
-                  items: ["Porcelanato premium", "Mármol"],
-                },
-                {
-                  title: "Equipamiento",
-                  items: ["Electrodomésticos", "Sistema de seguridad"],
-                },
-              ].map((section, index) => (
+              {model.categories.map((category, index) => (
                 <AccordionItem
                   key={index}
                   bg="#FFF"
@@ -107,15 +82,22 @@ export default function ModelViewer() {
                   <h2>
                     <AccordionButton>
                       <Box flex={1} textAlign="left">
-                        {section.title}
+                        {category.title}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
                   </h2>
                   <AccordionPanel>
                     <Flex direction="column" gap={2}>
-                      {section.items.map((item) => (
-                        <Checkbox variant="subtle">{item}</Checkbox>
+                      {category.questions.map((question, qIndex) => (
+                        <Box key={qIndex} mb={4}>
+                          <Text fontWeight="semibold">{question.text}</Text>
+                          {question.options.map((option, oIndex) => (
+                            <Checkbox key={oIndex} variant="subtle">
+                              {option}
+                            </Checkbox>
+                          ))}
+                        </Box>
                       ))}
                     </Flex>
                   </AccordionPanel>

@@ -1,6 +1,6 @@
 export const modelsData = [
     {
-      model: "Modelo 1",
+      model: "Modelo_1",
       categories: [
         {
           title: "Acabados de Muebles",
@@ -35,7 +35,7 @@ export const modelsData = [
       ],
     },
     {
-      model: "Modelo 2",
+      model: "Modelo_2",
       categories: [
         {
           title: "Acabados de Enchapes",
@@ -60,7 +60,7 @@ export const modelsData = [
       ],
     },
     {
-      model: "Modelo 3",
+      model: "Modelo_3",
       categories: [
         {
           title: "Pintura",
@@ -85,7 +85,7 @@ export const modelsData = [
       ],
     },
     {
-      model: "Modelo 3A",
+      model: "Modelo_3A",
       categories: [
         {
           title: "Baños",
@@ -100,7 +100,7 @@ export const modelsData = [
       ],
     },
     {
-      model: "Modelo 3B",
+      model: "Modelo_3B",
       categories: [
         {
           title: "Iluminación",
@@ -115,7 +115,7 @@ export const modelsData = [
       ],
     },
     {
-      model: "Modelo 3C",
+      model: "Modelo_3C",
       categories: [
         {
           title: "Seguridad",

@@ -1,14 +1,17 @@
 import { Carousel } from "../features/carousel";
 import { Card } from "../features/carousel/";
 import { Hero } from "../features/hero";
-// import Img from "../assets/Naala_assets/CASA_03_PLANTA_BAJA_1.png";
+import { modelsData } from "../data/form"; // Import the hardcoded data
 
-const cards = [
-  <Card image={"s"} name="Card 1" />,
-  <Card image={"s"} name="Card 2" />,
-  <Card image={"s"} name="Card 3" />,
-];
 export default function Main() {
+  const cards = modelsData.map((model, index) => (
+    <Card
+      key={index}
+      image={"https://via.placeholder.com/300"}
+      name={model.model}
+    />
+  ));
+
   return (
     <div className="flex flex-col justify-center items-center gap-20">
       <Hero />
