@@ -11,7 +11,7 @@ export const modelsData = [
             options: [
               { name: "Arctic Grey" },
               { name: "Chalk" },
-              { name: "Aventurine Green Metallic", image: "/images/aventurine-green.jpg" },
+              { name: "Aventurine Green Metallic", image: "https://picsum.photos/200/300?random=1" },
               { name: "Ice Grey Metallic" }
             ],
           },
@@ -24,7 +24,7 @@ export const modelsData = [
             id: 2,
             text: "¿Qué extras de cocina desea incluir?",
             options: [
-              { name: "Isla central", image: "/images/isla-central.jpg" },
+              { name: "Isla central", image: "https://picsum.photos/200/300?random=2" },
               { name: "Despensa adicional" }
             ],
           },
@@ -38,7 +38,7 @@ export const modelsData = [
             text: "¿Desea añadir previstas eléctricas?",
             options: [
               { name: "Tomacorrientes adicionales" },
-              { name: "Iluminación LED", image: "/images/iluminacion-led.jpg" }
+              { name: "Iluminación LED", image: "https://picsum.photos/200/300?random=3" }
             ],
           },
         ],
@@ -56,7 +56,7 @@ export const modelsData = [
             text: "¿Qué tipo de acabados de enchapes prefiere?",
             options: [
               { name: "Porcelanato premium" },
-              { name: "Mármol", image: "/images/marmol.jpg" }
+              { name: "Mármol", image: "https://picsum.photos/200/300?random=4" }
             ],
           },
         ],
@@ -69,7 +69,7 @@ export const modelsData = [
             text: "¿Desea incluir equipamiento adicional?",
             options: [
               { name: "Electrodomésticos" },
-              { name: "Sistema de seguridad", image: "/images/sistema-seguridad.jpg" }
+              { name: "Sistema de seguridad", image: "https://picsum.photos/200/300?random=5" }
             ],
           },
         ],
@@ -88,7 +88,7 @@ export const modelsData = [
             options: [
               { name: "Blanco" },
               { name: "Gris" },
-              { name: "Azul", image: "/images/azul.jpg" },
+              { name: "Azul", image: "https://picsum.photos/200/300?random=6" },
               { name: "Verde" }
             ],
           },
@@ -102,7 +102,7 @@ export const modelsData = [
             text: "¿Qué tipo de piso prefiere?",
             options: [
               { name: "Madera" },
-              { name: "Cerámica", image: "/images/ceramica.jpg" },
+              { name: "Cerámica", image: "https://picsum.photos/200/300?random=7" },
               { name: "Vinílico" }
             ],
           },
@@ -121,7 +121,7 @@ export const modelsData = [
             text: "¿Qué acabados para baños desea?",
             options: [
               { name: "Mármol" },
-              { name: "Granito", image: "/images/granito.jpg" },
+              { name: "Granito", image: "https://picsum.photos/200/300?random=8" },
               { name: "Cuarzo" }
             ],
           },
@@ -140,7 +140,7 @@ export const modelsData = [
             text: "¿Qué tipo de iluminación desea incluir?",
             options: [
               { name: "LED" },
-              { name: "Halógena", image: "/images/halogena.jpg" },
+              { name: "Halógena", image: "https://picsum.photos/200/300?random=9" },
               { name: "Incandescente" }
             ],
           },
@@ -160,7 +160,7 @@ export const modelsData = [
             options: [
               { name: "Cámaras" },
               { name: "Alarma" },
-              { name: "Cerraduras inteligentes", image: "/images/cerraduras-inteligentes.jpg" }
+              { name: "Cerraduras inteligentes", image: "https://picsum.photos/200/300?random=10" }
             ],
           },
         ],

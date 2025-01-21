@@ -4,9 +4,7 @@ import {
   Input,
   Box,
   Button,
-  Container,
   Flex,
-  Heading,
   Image,
   Text,
 } from "@chakra-ui/react";
@@ -44,7 +42,6 @@ export default function ModelViewer() {
 
   return (
     <Flex direction="column" minH="100vh">
-
       {/* Main Content */}
       <Flex flex={1} direction={{ base: "column", lg: "row" }}>
         {/* Image Section */}
@@ -93,9 +90,19 @@ export default function ModelViewer() {
                         <Box key={qIndex} mb={4}>
                           <Text fontWeight="semibold">{question.text}</Text>
                           {question.options.map((option, oIndex) => (
-                            <Checkbox key={oIndex} variant="subtle">
-                              {option}
-                            </Checkbox>
+                            <Flex key={oIndex} align="center" gap={2}>
+                              <Checkbox variant="subtle">
+                                {option.name}
+                              </Checkbox>
+                              {option.image && (
+                                <Image
+                                  src={option.image}
+                                  alt={option.name}
+                                  boxSize="50px"
+                                  objectFit="cover"
+                                />
+                              )}
+                            </Flex>
                           ))}
                         </Box>
                       ))}
