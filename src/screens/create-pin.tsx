@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Button,
   VStack,
   Container,
   Heading,
@@ -11,8 +10,13 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useMutation } from "@tanstack/react-query"; // Import useMutation
 import { generatePin } from "../api/pin"; // Import the API function
 import useFormSetter from "../hooks/useFormSetter"; // Import the useFormSetter hook
+import { Button } from "../components/ui/button";
+import { useNavigate } from "react-router";
+
+
 
 const CreatePin = () => {
+  const navigate = useNavigate();
   // Initialize form state with useFormSetter
   const [formState, setField] = useFormSetter({
     proyecto: "",
@@ -25,10 +29,11 @@ const CreatePin = () => {
   });
 
   // useMutation for generating PIN
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: generatePin, // Ensure generatePin is a properly defined async function
     onSuccess: (data) => {
       console.log("Mutation successful:", data);
+      navigate("/pin");
     },
     onError: (error) => {
       console.error("Mutation error:", error);
@@ -123,9 +128,10 @@ const CreatePin = () => {
           <Box pt={4}>
             <Button
               type="submit"
-              colorScheme="blue"
+              colorScheme="black"
               size="lg"
               width="full"
+              loading={isPending}
             >
               Generar Pin
             </Button>

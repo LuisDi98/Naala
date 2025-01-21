@@ -22,7 +22,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {loading && !loadingText ? (
           <>
             <AbsoluteCenter display="inline-flex">
-              <Spinner size="inherit" color="inherit" />
+              <Spinner size="inherit" color="#000" />
             </AbsoluteCenter>
             <Span opacity={0}>{children}</Span>
           </>
