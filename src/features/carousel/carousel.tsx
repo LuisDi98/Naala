@@ -3,15 +3,13 @@
 import { useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "./";
+import { modelsData } from "../../data/form";
 
-const properties = [
-  { id: 1, name: "Modelo 2", image: "/placeholder.svg?height=400&width=600" },
-  { id: 2, name: "Modelo 3a", image: "/placeholder.svg?height=400&width=600" },
-  { id: 3, name: "Modelo 3b", image: "/placeholder.svg?height=400&width=600" },
-  { id: 4, name: "Modelo 4", image: "/placeholder.svg?height=400&width=600" },
-  { id: 5, name: "Modelo 5", image: "/placeholder.svg?height=400&width=600" },
-];
-
+const properties = modelsData.map((model, index) => ({
+  id: index + 1,
+  name: model.model,
+  image: `/placeholder.svg?height=400&width=600`, // Replace with actual image URLs if available
+}));
 export default function CustomCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 

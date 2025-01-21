@@ -1,14 +1,14 @@
 import { Carousel } from "../features/carousel";
 import { Card } from "../features/carousel/";
 import { Hero } from "../features/hero";
-import { modelsData } from "../data/form"; // Import the hardcoded data
+import { modelsData } from "../data/form";
 
 export default function Main() {
   const cards = modelsData.map((model, index) => (
     <Card
       key={index}
       image={"https://via.placeholder.com/300"}
-      name={model.model}
+      name={"steven"}
     />
   ));
 

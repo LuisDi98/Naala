@@ -26,7 +26,7 @@ export default function PropertyCard({ name, image }: PropertyCardProps) {
           <h3 className="text-2xl font-bold text-white">{name}</h3>
           <div className="flex gap-4">
             <Button className="flex-1 py-2 px-4 text-lg bg-[#edddc3] hover:bg-[#edddc3] text-stone-900 font-bold">
-              <Link to="/">Personalizar</Link>
+              <Link to={`/${name}`}>Personalizar</Link>
             </Button>
             <Button className="flex-1 py-2 px-4 text-lg border-[#edddc3] border-2 text-white hover:bg-white/10 font-bold">
               <Link to="/">Detalles</Link>
