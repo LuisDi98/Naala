@@ -43,6 +43,7 @@ export default function CustomCarousel() {
           </div>
         </div>
 
+    
         <button
           onClick={prev}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 w-10 h-10 flex items-center justify-center rounded-full border border-white bg-[#edddc3] text-black hover:bg-[#edddc3]"

@@ -34,7 +34,6 @@ export default function PinInputField() {
         >
           <Lock size={20} />
           <Input
-            type="password"
             placeholder="Pin"
             variant="unstyled"
             ml={3}
