@@ -24,6 +24,8 @@ import { modelsData } from "../data/form"; // Import the hardcoded data
 import Bg from "../assets/Naala_assets/bg_4.png";
 
 export default function ModelViewer() {
+  console.log("modelsData", modelsData);
+  
   const { pathname } = useLocation();
   const modelName = pathname.split("/").pop(); // Extract model name from the path
   const model = modelsData.find((m) => m.model === modelName);
