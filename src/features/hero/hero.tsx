@@ -1,4 +1,4 @@
-import BG from "../../assets/Naala_assets/bg-img.jpeg";
+import BG from "../../assets/Naala_assets/bg_1.png";
 import { Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { data } from "../../index.css"
@@ -9,7 +9,7 @@ export default function Hero() {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: `url(${BG})`,
+          backgroundImage: "url(" + BG + ")",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           opacity: 0.9,

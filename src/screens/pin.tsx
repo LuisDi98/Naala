@@ -13,21 +13,28 @@ export default function PinInputField() {
 
   // useMutation for verifying PIN
   const { mutate: verify, isPending } = useMutation({
-    mutationFn: verifyPin, // Ensure generatePin is a properly defined async function
+    mutationFn: verifyPin, // Ensure verifyPin is a properly defined async function
     onSuccess: (data) => {
       console.log(data);
-      navigate("/" + data.modelo);
+
+      // Navigate to full URL when PIN is verified successfully
+      window.location.href = `http://localhost:5173/${data.modelo}`;
     },
     onError: (error) => {
       console.error("Mutation error:", error);
+      toaster.create({
+        description: error.response?.data?.message || "PIN no válido.",
+        type: "error",
+      });
     },
   });
 
   // Function to handle PIN submission
   const handleVerify = () => {
+    window.location.href = `http://localhost:5173/Modelo_1`;
     if (!pin) {
       toaster.create({
-        description: error.response?.data?.message || "PIN no válido.",
+        description: "Por favor ingresa un PIN válido.",
         type: "error",
       });
       return;
@@ -83,7 +90,7 @@ export default function PinInputField() {
             ml={2}
             onClick={handleVerify} // Call handleVerify on click
           >
-            <Button loading={isPending}>
+            <Button isLoading={isPending}>
               <ArrowRight size={20} />
             </Button>
           </IconButton>
