@@ -22,13 +22,17 @@ import { Footer } from "../features/footer";
 import { useLocation } from "react-router-dom"; // Dynamically get pathname
 import { modelsData } from "../data/form"; // Import the hardcoded data
 import Bg from "../assets/Naala_assets/bg_4.png";
+import { useState } from "react";
 
 export default function ModelViewer() {
   console.log("modelsData", modelsData);
-  
+
   const { pathname } = useLocation();
   const modelName = pathname.split("/").pop(); // Extract model name from the path
   const model = modelsData.find((m) => m.model === modelName);
+
+  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: any }>({});
+  const [totalPrice, setTotalPrice] = useState(0);
 
   if (!model) {
     return (
@@ -41,6 +45,31 @@ export default function ModelViewer() {
       </Flex>
     );
   }
+
+  // Handle checkbox selection ensuring only one per question
+  const handleSelection = (categoryIndex: number, questionIndex: number, option: any) => {
+    const key = `${categoryIndex}-${questionIndex}`;
+
+    setSelectedOptions((prevSelectedOptions) => {
+      const updatedOptions = { ...prevSelectedOptions };
+
+      // If the same option is clicked again, deselect it
+      if (updatedOptions[key]?.name === option.name) {
+        delete updatedOptions[key];
+        setTotalPrice((prevPrice) => prevPrice - option.price);
+      } else {
+        // If another option in the same question is selected, remove the previous one
+        if (updatedOptions[key]) {
+          setTotalPrice((prevPrice) => prevPrice - updatedOptions[key].price);
+        }
+
+        updatedOptions[key] = option;
+        setTotalPrice((prevPrice) => prevPrice + option.price);
+      }
+
+      return updatedOptions;
+    });
+  };
 
   return (
     <Flex direction="column" minH="100vh">
@@ -69,12 +98,11 @@ export default function ModelViewer() {
               <Text fontSize="sm">Detalles</Text>
               <Text fontSize="sm">Acabados estándar</Text>
             </Flex>
-
             {/* Accordion Sections */}
             <Accordion className="gap-8 p-8">
-              {model.categories.map((category, index) => (
+              {model.categories.map((category, categoryIndex) => (
                 <AccordionItem
-                  key={index}
+                  key={categoryIndex}
                   bg="#FFF"
                   className="mt-4 p-4 rounded-lg"
                 >
@@ -88,13 +116,17 @@ export default function ModelViewer() {
                   </h2>
                   <AccordionPanel>
                     <Flex direction="column" gap={2}>
-                      {category.questions.map((question, qIndex) => (
-                        <Box key={qIndex} mb={4}>
+                      {category.questions.map((question, questionIndex) => (
+                        <Box key={questionIndex} mb={4}>
                           <Text fontWeight="semibold">{question.text}</Text>
-                          {question.options.map((option, oIndex) => (
-                            <Flex key={oIndex} align="center" gap={2}>
-                              <Checkbox variant="subtle">
-                                {option.name}
+                          {question.options.map((option, optionIndex) => (
+                            <Flex key={optionIndex} align="center" gap={2}>
+                              <Checkbox
+                                isChecked={selectedOptions[`${categoryIndex}-${questionIndex}`]?.name === option.name}
+                                onChange={() => handleSelection(categoryIndex, questionIndex, option)}
+                                variant="subtle"
+                              >
+                                {option.name} - ${option.price}
                               </Checkbox>
                               {option.image && (
                                 <Image
@@ -118,7 +150,7 @@ export default function ModelViewer() {
       </Flex>
 
       {/* Footer */}
-      <Footer />
+      <Footer totalPrice={totalPrice} />
     </Flex>
   );
 }
