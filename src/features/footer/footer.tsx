@@ -1,9 +1,25 @@
-"use client"
+"use client";
 
-import { Box, Button, Container, Flex, Text } from "@chakra-ui/react"
-import { Home, Save, Printer, Send } from "lucide-react"
+import { Box, Button, Container, Flex, Text } from "@chakra-ui/react";
+import { Home, Save, Printer, Send } from "lucide-react";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "../../components/ui/dialog";
 
-export default function Footer() {
+// Define props for the Footer
+interface FooterProps {
+  totalPrice: number;
+}
+
+export default function Footer({ totalPrice }: FooterProps) {
   return (
     <Box
       as="footer"
@@ -35,16 +51,60 @@ export default function Footer() {
           <Flex align="center" gap={4}>
             <Flex align="center" gap={2}>
               <Home size={16} />
-              <Text>Valor de extras: 3,000</Text>
+              <Text fontWeight="bold">
+                Valor de extras: ${totalPrice.toLocaleString()}
+              </Text>
             </Flex>
-            <Text>Valor del modelo: 143,000</Text>
-            <Button bgColor="#000" color="#fff" size="lg" p={2}>
-              <Send size={8}/>
-              Terminar
-            </Button>
+
+            <DialogRoot>
+              <DialogTrigger asChild>
+                <Button bgColor="#000" color="#fff" size="lg" p={2}>
+                  <Send size={8} />
+                  Terminar
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Descargar Contrato</DialogTitle>
+                </DialogHeader>
+                <DialogBody>
+                  <Text fontSize="lg" fontWeight="medium">
+                    Favor enviar la transferencia a la cuenta:
+                  </Text>
+                  <Text
+                    fontSize="xl"
+                    fontWeight="bold"
+                    color="blue.500"
+                    border="1px solid"
+                    borderColor="gray.300"
+                    borderRadius="md"
+                    p={2}
+                    textAlign="center"
+                  >
+                    IBAN: CR21010200009317285965
+                    <br></br>BAC: 931728596
+                  </Text>
+
+                  <Text fontSize="lg" fontWeight="medium" mt={4}>
+                    Y el comprobante al correo:
+                  </Text>
+
+                  <Text fontSize="xl" fontWeight="bold" color="green.500" textAlign="center">
+                    mfernandez@urbania.cr
+                  </Text>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogActionTrigger asChild>
+                    <Button variant="outline">Cancelar</Button>
+                  </DialogActionTrigger>
+                  <Button colorScheme="blue">Descargar</Button>
+                </DialogFooter>
+                <DialogCloseTrigger />
+              </DialogContent>
+            </DialogRoot>
           </Flex>
         </Flex>
       </Container>
     </Box>
-  )
+  );
 }

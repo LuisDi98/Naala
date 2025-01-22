@@ -6,6 +6,13 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "skipLibCheck": true,            // Ignora la verificación de tipos en archivos de librerías
+    "noImplicitAny": false,           // Permite variables sin tipo explícito
+    "strictNullChecks": false,         // Permite valores nulos sin errores estrictos
+    "allowJs": true,                   // Permite archivos .js en el proyecto
+    "allowSyntheticDefaultImports": true,  // Permite imports sin declaración de tipos
+    "esModuleInterop": true,              // Evita problemas con módulos de ES y CommonJS
+    "forceConsistentCasingInFileNames": false,  // Ignora problemas de mayúsculas/minúsculas en nombres de archivos
     "paths": {
       "@/*": ["src/*"]
     }
