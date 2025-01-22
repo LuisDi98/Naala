@@ -31,7 +31,6 @@ export default function PinInputField() {
 
   // Function to handle PIN submission
   const handleVerify = () => {
-    window.location.href = `http://localhost:5173/Modelo_1`;
     if (!pin) {
       toaster.create({
         description: "Por favor ingresa un PIN válido.",

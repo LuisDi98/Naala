@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Input,
   Box,
@@ -7,31 +5,23 @@ import {
   Flex,
   Image,
   Text,
+  VStack,
 } from "@chakra-ui/react";
-import { InputGroup } from "@/components/ui/input-group";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/accordion";
+import { Radio, RadioGroup } from "./../components/ui/radio";
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/accordion";
 import { Search, Expand } from "lucide-react";
 import { Footer } from "../features/footer";
-import { useLocation } from "react-router-dom"; // Dynamically get pathname
-import { modelsData } from "../data/form"; // Import the hardcoded data
+import { useLocation } from "react-router-dom";
+import { modelsData } from "../data/form";
 import Bg from "../assets/Naala_assets/bg_4.png";
 import { useState } from "react";
 
 export default function ModelViewer() {
-  console.log("modelsData", modelsData);
-
   const { pathname } = useLocation();
-  const modelName = pathname.split("/").pop(); // Extract model name from the path
+  const modelName = pathname.split("/").pop();
   const model = modelsData.find((m) => m.model === modelName);
 
-  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: any }>({});
+  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: { name: string; price: number } }>({});
   const [totalPrice, setTotalPrice] = useState(0);
 
   if (!model) {
@@ -46,36 +36,30 @@ export default function ModelViewer() {
     );
   }
 
-  // Handle checkbox selection ensuring only one per question
-  const handleSelection = (categoryIndex: number, questionIndex: number, option: any) => {
-    const key = `${categoryIndex}-${questionIndex}`;
-
+  const handleOptionChange = (
+    selectedValue: string, 
+    question: any, 
+    questionOptions: any[]
+  ) => {
+    const selectedOption = questionOptions.find(option => option.name === selectedValue);
+    console.log("Opción encontrada:", selectedOption);
+    if (!selectedOption) return;
     setSelectedOptions((prevSelectedOptions) => {
       const updatedOptions = { ...prevSelectedOptions };
-
-      // If the same option is clicked again, deselect it
-      if (updatedOptions[key]?.name === option.name) {
-        delete updatedOptions[key];
-        setTotalPrice((prevPrice) => prevPrice - option.price);
-      } else {
-        // If another option in the same question is selected, remove the previous one
-        if (updatedOptions[key]) {
-          setTotalPrice((prevPrice) => prevPrice - updatedOptions[key].price);
-        }
-
-        updatedOptions[key] = option;
-        setTotalPrice((prevPrice) => prevPrice + option.price);
+      if (updatedOptions[question.text]) {
+        const prevOption = updatedOptions[question.text];
+        setTotalPrice((prevPrice) => prevPrice - prevOption.price);
       }
-
+      updatedOptions[question.text] = { name: selectedOption.name, price: selectedOption.price };
+      setTotalPrice((prevPrice) => prevPrice + selectedOption.price);
+      console.log("Opciones seleccionadas:", updatedOptions);
       return updatedOptions;
     });
   };
 
   return (
     <Flex direction="column" minH="100vh">
-      {/* Main Content */}
       <Flex flex={1} direction={{ base: "column", lg: "row" }}>
-        {/* Image Section */}
         <Box flex={1} position="relative" p={4}>
           <Box position="relative" borderRadius="lg" overflow="hidden">
             <Image src={Bg} alt={`${model.model} Interior`} width="100%" height="auto" />
@@ -85,30 +69,20 @@ export default function ModelViewer() {
           </Box>
         </Box>
 
-        {/* Sidebar */}
-        <Box w={{ base: "100%", lg: "400px" }} p={4} bg="transparent">
+        <Box w={{ base: "100%", lg: "500px" }} p={4} bg="transparent">
           <Flex direction="column" gap={4}>
-            {/* Search */}
-            <InputGroup startElement={<Search size={20} color="gray.400" />}>
-              <Input placeholder="Buscar un acabado" bg="white" />
-            </InputGroup>
+            
 
-            {/* Details Section */}
-            <Flex justify="space-between" px={2}>
-              <Text fontSize="sm">Detalles</Text>
-              <Text fontSize="sm">Acabados estándar</Text>
-            </Flex>
-            {/* Accordion Sections */}
-            <Accordion className="gap-8 p-8">
+            <Text fontSize="2xl" fontWeight="bold">
+              Bienvenido, marque las opciones que desea agregar a su modelo.
+            </Text>
+
+            <Accordion className="gap-8 p-5" defaultIndex={[0]}>
               {model.categories.map((category, categoryIndex) => (
-                <AccordionItem
-                  key={categoryIndex}
-                  bg="#FFF"
-                  className="mt-4 p-4 rounded-lg"
-                >
+                <AccordionItem key={categoryIndex} bg="#FFF" className="mt-4 p-4 rounded-lg">
                   <h2>
                     <AccordionButton>
-                      <Box flex={1} textAlign="left">
+                      <Box className="mb-5" flex={1} textAlign="left" fontSize="2xl" fontWeight="bold">
                         {category.title}
                       </Box>
                       <AccordionIcon />
@@ -117,27 +91,26 @@ export default function ModelViewer() {
                   <AccordionPanel>
                     <Flex direction="column" gap={2}>
                       {category.questions.map((question, questionIndex) => (
-                        <Box key={questionIndex} mb={4}>
-                          <Text fontWeight="semibold">{question.text}</Text>
-                          {question.options.map((option, optionIndex) => (
-                            <Flex key={optionIndex} align="center" gap={2}>
-                              <Checkbox
-                                isChecked={selectedOptions[`${categoryIndex}-${questionIndex}`]?.name === option.name}
-                                onChange={() => handleSelection(categoryIndex, questionIndex, option)}
-                                variant="subtle"
-                              >
-                                {option.name} - ${option.price}
-                              </Checkbox>
-                              {option.image && (
-                                <Image
-                                  src={option.image}
-                                  alt={option.name}
-                                  boxSize="50px"
-                                  objectFit="cover"
-                                />
-                              )}
-                            </Flex>
-                          ))}
+                        <Box key={questionIndex} mb={4} p={4} bg="#F9F9F9" borderRadius="lg">
+                          <Text mb={4} fontWeight="bold" fontSize="lg">
+                            {question.text}
+                          </Text>
+                          <RadioGroup
+                          key={"subtle"}
+                          variant={"subtle"}
+                          onChange={(event) => handleOptionChange(event.target.value, question, question.options)}
+                          >
+                            <VStack gap="4" align="start">
+                              {question.options.map((option, optionIndex) => (
+                                <Radio 
+                                  key={optionIndex}
+                                  value={String(option.name)}
+                                >
+                                  <Text fontSize="lg">{option.name} - ${option.price}</Text>
+                                </Radio>
+                              ))}
+                            </VStack>
+                          </RadioGroup>
                         </Box>
                       ))}
                     </Flex>
@@ -145,11 +118,11 @@ export default function ModelViewer() {
                 </AccordionItem>
               ))}
             </Accordion>
+
           </Flex>
         </Box>
       </Flex>
 
-      {/* Footer */}
       <Footer totalPrice={totalPrice} />
     </Flex>
   );

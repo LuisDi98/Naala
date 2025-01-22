@@ -75,6 +75,7 @@ const baseModelData = {
   categories: [
     {
       title: "Acabados de Muebles",
+      
       questions: [
         {
           id: 1,
@@ -97,6 +98,7 @@ const baseModelData = {
     },
     {
       title: "Previstas Eléctricas",
+      
       questions: [
         {
           id: 3,
@@ -131,7 +133,7 @@ const baseModelData = {
           id: 6,
           text: "Como desea el enchape del piso general?",
           options: [
-            { name: "Belen marfil" },
+            { name: "Belen marfil", image: "/belen-marfil.jpg" },
             { name: "Dessert blanco" }
           ],
         },
