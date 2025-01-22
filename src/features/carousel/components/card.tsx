@@ -23,7 +23,7 @@ export default function PropertyCard({ name, image }: PropertyCardProps) {
         </div>
         {/* Content Container */}
         <div className="flex flex-col gap-4 p-4">
-          <h3 className="text-2xl font-bold text-white">{name}</h3>
+        <h3 className="text-2xl font-bold text-black">{name.replace(/_/g, ' ')}</h3>
           <div className="flex gap-4">
             <Button className="flex-1 py-2 px-4 text-lg bg-[#edddc3] hover:bg-[#edddc3] text-stone-900 font-bold">
               <Link to={`/pin`}>Personalizar</Link>

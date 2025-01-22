@@ -38,7 +38,7 @@ export default function Main() {
         Contacto
       </p>
       <div className="flex flex-col justify-center items-center gap-4">
-        <p className="text-2xl">+506 8888-8888</p>
+        <p className="text-2xl">+506 2103-4245</p>
         <p className="text-2xl"/>  
     </div>
     </div>

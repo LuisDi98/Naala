@@ -62,4 +62,4 @@ const generateDocument = async () => {
     }
 };
 
-export 
+export { generateDocument };

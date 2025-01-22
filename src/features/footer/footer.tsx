@@ -81,7 +81,8 @@ export default function Footer({ totalPrice }: FooterProps) {
                     p={2}
                     textAlign="center"
                   >
-                    CR2154774849851561489
+                    IBAN: CR21010200009317285965
+                    <br></br>BAC: 931728596
                   </Text>
 
                   <Text fontSize="lg" fontWeight="medium" mt={4}>

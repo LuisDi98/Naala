@@ -1,6 +1,4 @@
-import { useState } from "react";
 import {
-  Box,
   Button,
   Modal,
   ModalOverlay,
