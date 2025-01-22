@@ -8,7 +8,7 @@ import { modelsData } from "../../data/form";
 const properties = modelsData.map((model, index) => ({
   id: index + 1,
   name: model.model,
-  image: `/placeholder.svg?height=400&width=600`, // Replace with actual image URLs if available
+  image: model.image
 }));
 export default function CustomCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,6 +38,7 @@ export default function CustomCarousel() {
                 key={property.id}
                 name={property.name}
                 image={property.image}
+                style={{ backgroundColor: 'white' }}
               />
             ))}
           </div>

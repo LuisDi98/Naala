@@ -9,7 +9,7 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ name, image }: PropertyCardProps) {
   return (
-    <div className="min-w-[33.33%] px-2" style={{ background: "#000" }}>
+    <div className="min-w-[33.33%] px-2" style={{ background: "#FFF" }}>
       <div className="flex flex-col h-full bg-transparent rounded-lg overflow-hidden">
         {/* Image Container */}
         <div className="relative flex-1">
@@ -19,7 +19,7 @@ export default function PropertyCard({ name, image }: PropertyCardProps) {
             className="w-full h-[400px] object-cover rounded-lg"
           />
           {/* Overlay with gradient */}
-          <div className="w-full h-full bg-gradient-to-t from-black/80 to-transparent rounded-lg" />
+          <div className="w-full h-full bg-gradient-to-t from-white/80 to-transparent rounded-lg" />
         </div>
         {/* Content Container */}
         <div className="flex flex-col gap-4 p-4">
@@ -28,7 +28,7 @@ export default function PropertyCard({ name, image }: PropertyCardProps) {
             <Button className="flex-1 py-2 px-4 text-lg bg-[#edddc3] hover:bg-[#edddc3] text-stone-900 font-bold">
               <Link to={`/${name}`}>Personalizar</Link>
             </Button>
-            <Button className="flex-1 py-2 px-4 text-lg border-[#edddc3] border-2 text-white hover:bg-white/10 font-bold">
+            <Button className="flex-1 py-2 px-4 text-lg border-[#000] border-2 text-black hover:bg-white/10 font-bold">
               <Link to="/">Detalles</Link>
             </Button>
           </div>

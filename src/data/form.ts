@@ -220,22 +220,27 @@ const model2AdditionalQuestions = {
 export const modelsData = [
   {
     model: "Modelo_1",
+    image: "/modelo-1.jpg",
     categories: addPricesToModel("Modelo_1", baseModelData.categories),
   },
   {
     model: "Modelo_2",
+    image: "/modelo-2.jpg",
     categories: addPricesToModel("Modelo_2", [...baseModelData.categories, model2AdditionalQuestions]),
   },
   {
     model: "Modelo_3A",
+    image: "/modelo-3.jpg",
     categories: addPricesToModel("Modelo_3A", baseModelData.categories),
   },
   {
     model: "Modelo_3B",
+    image: "/modelo-3.jpg",
     categories: addPricesToModel("Modelo_3B", baseModelData.categories),
   },
   {
     model: "Modelo_3C",
+    image: "/modelo-3.jpg",
     categories: addPricesToModel("Modelo_3C", baseModelData.categories),
   },
 ];

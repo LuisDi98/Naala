@@ -1,4 +1,4 @@
-import BG from "../../assets/Naala_assets/bg_1.png";
+import BG from "../../assets/Naala_assets/bg-img.jpeg";
 import { Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { data } from "../../index.css"
@@ -12,7 +12,7 @@ export default function Hero() {
           backgroundImage: `url(${BG})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          opacity: 0.9, // Adjust the opacity level here
+          opacity: 0.9,
           zIndex: -1,
         }}
       ></div>
