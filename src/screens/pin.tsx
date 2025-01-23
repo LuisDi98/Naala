@@ -21,7 +21,7 @@ export default function PinInputField() {
       localStorage.setItem("pinData", JSON.stringify(data.pin));
 
       // Navigate to full URL when PIN is verified successfully
-      navigate('/'+data.pin.modelo);
+      navigate(`/${data.pin.modelo}`);
     },
     onError: (error) => {
       console.error("Mutation error:", error);
