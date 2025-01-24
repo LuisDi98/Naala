@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, Container, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Text, VStack, Separator } from "@chakra-ui/react";
 import { downloadDocx } from "../../api/contract";
 import {
   DialogRoot,
@@ -10,7 +10,6 @@ import {
   DialogBody,
   DialogFooter,
   DialogCloseTrigger,
-  DialogActionTrigger
 } from "../../components/ui/dialog";
 
 interface FooterProps {
@@ -21,17 +20,18 @@ interface FooterProps {
 
 export default function Footer({ totalPrice, selectedOptions, clientEmail }: FooterProps) {
   const [isAccepted, setIsAccepted] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleAcceptContract = async () => {
     console.log("Aceptando contrato...");
     console.log("Opciones seleccionadas:", selectedOptions);
-    //Datos que ocupamos para el contrato
-    // const { selectedOptions, clientEmail, fecha, finca, modelo, propietario } = req.body;
-    // Los haremos quemados por probar
+
+    // Datos quemados para prueba
     const fecha = "2021-10-10";
     const finca = "Alfa";
     const modelo = "Modelo_1";
     const propietario = "Luis Diego";
+
     await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
     setIsAccepted(true);
   };
@@ -47,7 +47,7 @@ export default function Footer({ totalPrice, selectedOptions, clientEmail }: Foo
           <Flex align="center" gap={4}>
             <Text fontWeight="bold">Valor de extras: ${totalPrice.toLocaleString()}</Text>
 
-            <DialogRoot>
+            <DialogRoot open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button bgColor="#000" color="#fff" size="lg" p={2}>
                   Finalizar Contrato
@@ -56,18 +56,27 @@ export default function Footer({ totalPrice, selectedOptions, clientEmail }: Foo
 
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>{isAccepted ? "Información de Pago" : "Descargar Contrato"}</DialogTitle>
+                  <DialogTitle>{isAccepted ? "Información de Pago" : "Resumen del Contrato"}</DialogTitle>
                 </DialogHeader>
 
                 <DialogBody>
                   {!isAccepted ? (
                     <>
                       <Text fontSize="lg" fontWeight="medium">
-                        Descarga el contrato y revísalo antes de continuar.
+                        Por favor verificar y confirmar sus personalizaciones, una vez confirmado se generará el contrato.
                       </Text>
-                      <Button border={"black"} colorScheme="blue" mt={4} onClick={() => handleAcceptContract()}>
-                        Descargar Contrato
-                      </Button>
+                      <VStack spacing={3} align="start" mt={4}>
+                        {Object.entries(selectedOptions).map(([question, option], index) => (
+                          <Box key={index} p={2} border="1px solid #ddd" borderRadius="md" w="100%">
+                            <Text fontWeight="bold">{question}</Text>
+                            <Text color="gray.600">Opción: {option.name}</Text>
+                            <Text color="gray.600">Costo: ${option.price}</Text>
+                          </Box>
+                        ))}
+                      </VStack>
+
+                      <Separator my={4} />
+                      <Text fontWeight="bold">Total a pagar: ${totalPrice.toLocaleString()}</Text>
                     </>
                   ) : (
                     <>
@@ -97,18 +106,16 @@ export default function Footer({ totalPrice, selectedOptions, clientEmail }: Foo
                 </DialogBody>
 
                 <DialogFooter>
-                  <DialogActionTrigger asChild>
+                  <DialogCloseTrigger asChild>
                     <Button variant="outline">Cancelar</Button>
-                  </DialogActionTrigger>
+                  </DialogCloseTrigger>
 
                   {!isAccepted ? (
                     <Button colorScheme="green" onClick={handleAcceptContract}>
-                      Aceptar
+                      Confirmar
                     </Button>
                   ) : null}
                 </DialogFooter>
-
-                <DialogCloseTrigger />
               </DialogContent>
             </DialogRoot>
           </Flex>
