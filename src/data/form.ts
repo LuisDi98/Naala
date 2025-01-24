@@ -12,6 +12,25 @@ const addPricesToModel = (modelName: string, categories: any[]) => {
   }));
 };
 
+function mergeCategories(baseCategories: { title: string; questions: { id: number; text: string; options: ({ name: string; image: string; } | { name: string; image?: undefined; })[]; }[]; }[], additionalCategories: { title: string; questions: { id: number; text: string; options: { name: string; }[]; }[]; }) {
+  // Asegurarse de que additionalCategories es un array
+  const additionalCategoriesArray = Array.isArray(additionalCategories) ? additionalCategories : [additionalCategories];
+
+  const merged = [...baseCategories, ...additionalCategoriesArray].reduce((acc, category) => {
+      const existingCategory = acc.find((cat: { title: any; }) => cat.title === category.title);
+      if (existingCategory) {
+          // Combinar preguntas si la categoría ya existe
+          existingCategory.questions = existingCategory.questions.concat(category.questions);
+      } else {
+          // Agregar nueva categoría
+          acc.push(category);
+      }
+      return acc;
+  }, []);
+
+  return merged;
+}
+
 const model3Pricing = {
   1: { "Caramel": 0, "Roble Rustico": 0, "Roble provenza": 0 },
   2: { "Ambos": 649,"Ninguno": 0 },
@@ -60,15 +79,10 @@ const modelPricing : any = {
     12: { "Si": 747, "No": 0 },
     13: { "Si": 841, "No": 0 },
   },
-  Modelo_3A: {
+  Modelo_3: {
     ...model3Pricing,
   },
-  Modelo_3B: {
-    ...model3Pricing,
-  },
-  Modelo_3C: {
-    ...model3Pricing,
-  },
+  
 };
 
 const baseModelData = {
@@ -219,30 +233,29 @@ const model2AdditionalQuestions = {
   ],
 };
 
+// Función para realizar una clonación profunda del objeto evitando modificar el original
+function deepClone(obj: { title: string; questions: { id: number; text: string; options: ({ name: string; image: string; } | { name: string; image?: undefined; })[]; }[]; }[]) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+// Modificación de la creación de los modelos para evitar compartir la misma referencia
 export const modelsData = [
-  {
-    model: "Modelo_1",
-    image: "/modelo-1.jpg",
-    categories: addPricesToModel("Modelo_1", baseModelData.categories),
-  },
-  {
-    model: "Modelo_2",
-    image: "/modelo-2.jpg",
-    categories: addPricesToModel("Modelo_2", [...baseModelData.categories, model2AdditionalQuestions]),
-  },
-  {
-    model: "Modelo_3A",
-    image: "/modelo-3.jpg",
-    categories: addPricesToModel("Modelo_3A", baseModelData.categories),
-  },
-  {
-    model: "Modelo_3B",
-    image: "/modelo-3.jpg",
-    categories: addPricesToModel("Modelo_3B", baseModelData.categories),
-  },
-  {
-    model: "Modelo_3C",
-    image: "/modelo-3.jpg",
-    categories: addPricesToModel("Modelo_3C", baseModelData.categories),
-  },
+{
+  model: "Modelo_1",
+  image: "/modelo-1.jpg",
+  categories: addPricesToModel("Modelo_1", deepClone(baseModelData.categories)),
+},
+{
+  model: "Modelo_2",
+  image: "/modelo-2.jpg",
+  categories: addPricesToModel(
+    "Modelo_2",
+    mergeCategories(deepClone(baseModelData.categories), deepClone(model2AdditionalQuestions))
+  ),
+},
+{
+  model: "Modelo_3",
+  image: "/modelo-3.jpg",
+  categories: addPricesToModel("Modelo_3", deepClone(baseModelData.categories)),
+},
 ];

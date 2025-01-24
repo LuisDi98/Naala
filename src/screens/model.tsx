@@ -20,6 +20,8 @@ export default function ModelViewer() {
   const { pathname } = useLocation();
   const modelName = pathname.split("/").pop();
   const model = modelsData.find((m) => m.model === modelName);
+  console.log("Modelo seleccionado:", model);
+  
 
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: { name: string; price: number } }>({});
   const [totalPrice, setTotalPrice] = useState(0);
@@ -42,7 +44,6 @@ export default function ModelViewer() {
     questionOptions: any[]
   ) => {
     const selectedOption = questionOptions.find(option => option.name === selectedValue);
-    console.log("Opción encontrada:", selectedOption);
     if (!selectedOption) return;
     setSelectedOptions((prevSelectedOptions) => {
       const updatedOptions = { ...prevSelectedOptions };
