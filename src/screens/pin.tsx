@@ -18,6 +18,8 @@ export default function PinInputField() {
     onSuccess: (data) => {
       console.log(data);
 
+      localStorage.setItem("pinData", JSON.stringify(data.pin));
+
       // Navigate to full URL when PIN is verified successfully
       navigate('/'+data.pin.modelo);
     },

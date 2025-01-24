@@ -29,13 +29,15 @@ const CreatePin = () => {
   // Initialize form state with useFormSetter
   const [formState, setField] = useFormSetter({
     proyecto: "",
-    fincaFilial: "",
+    finca: "",
     modelo: "",
     nombre: "",
     cedula: "",
     telefono: "",
     correo: "",
+    adminPassword: "",
   });
+  
   const models = createListCollection({
     items: [
     { label: "Modelo tipo 1", value: "Modelo_1" },
@@ -59,8 +61,19 @@ const CreatePin = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate(formState); // Call mutate directly with formState
+    
+    const adminSecretPass = import.meta.env.VITE_ADMIN_SECRET_PIN_PASS;
+    console.log("ADMIN_SECRET_PIN_PASS:", import.meta.env.VITE_ADMIN_SECRET_PIN_PASS);
+
+  
+    if (formState.adminPassword !== adminSecretPass) {
+      alert("Contraseña de administrador incorrecta. No puedes generar un pin.");
+      return;
+    }
+  
+    mutate(formState); // Llamar la mutación si la contraseña es correcta
   };
+  
 
   return (
     <Container maxW="md" py={8}>
@@ -83,10 +96,10 @@ const CreatePin = () => {
           <FormControl isRequired>
             <FormLabel>Finca Filial</FormLabel>
             <Input
-              name="fincaFilial"
+              name="finca"
               placeholder="Ingresa la Finca Filial"
-              value={formState.fincaFilial}
-              onChange={(e) => setField("fincaFilial")(e.target.value)}
+              value={formState.finca}
+              onChange={(e) => setField("finca")(e.target.value)}
             />
           </FormControl>
 
@@ -155,6 +168,18 @@ const CreatePin = () => {
               onChange={(e) => setField("correo")(e.target.value)}
             />
           </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel>Contraseña de administrador</FormLabel>
+            <Input
+              name="adminPassword"
+              placeholder="Ingrese la contraseña de administrador"
+              type="password"
+              value={formState.adminPassword}
+              onChange={(e) => setField("adminPassword")(e.target.value)}
+            />
+          </FormControl>
+
 
           <Box pt={4}>
             <Button

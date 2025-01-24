@@ -11,30 +11,38 @@ import {
   DialogFooter,
   DialogCloseTrigger,
 } from "../../components/ui/dialog";
+import { toaster } from "../../components/ui/toaster";
 
 interface FooterProps {
   totalPrice: number;
   selectedOptions: { [key: string]: { name: string; price: number } };
-  clientEmail: string;
 }
 
-export default function Footer({ totalPrice, selectedOptions, clientEmail }: FooterProps) {
+export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleAcceptContract = async () => {
     console.log("Aceptando contrato...");
     console.log("Opciones seleccionadas:", selectedOptions);
-
-    // Datos quemados para prueba
-    const fecha = "2021-10-10";
-    const finca = "Alfa";
-    const modelo = "Modelo_1";
-    const propietario = "Luis Diego";
-
+    // Obtener datos desde localStorage
+    const storedData = localStorage.getItem("pinData");
+    if (!storedData) {
+      toaster.create({
+        description: "No se encontraron datos del contrato. Verifique el PIN.",
+        type: "error",
+      });
+      return;
+    }
+    
+    const pinData = JSON.parse(storedData);
+    const fecha = new Date().toLocaleDateString();
+    const { correo, modelo, nombre, finca } = pinData;
+    const clientEmail = correo;
+    const propietario = nombre;
     await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
     setIsAccepted(true);
-  };
+};
 
   return (
     <Box as="footer" borderTop="1px" borderColor="gray.200" p={4} bg="white" w="100%" position="sticky" bottom="0" zIndex="10">
@@ -50,7 +58,7 @@ export default function Footer({ totalPrice, selectedOptions, clientEmail }: Foo
             <DialogRoot open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button bgColor="#000" color="#fff" size="lg" p={2}>
-                  Finalizar Contrato
+                  Revisar
                 </Button>
               </DialogTrigger>
 
@@ -112,7 +120,7 @@ export default function Footer({ totalPrice, selectedOptions, clientEmail }: Foo
 
                   {!isAccepted ? (
                     <Button colorScheme="green" onClick={handleAcceptContract}>
-                      Confirmar
+                      Finalizar Contrato
                     </Button>
                   ) : null}
                 </DialogFooter>

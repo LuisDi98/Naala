@@ -202,7 +202,7 @@ const baseModelData = {
         {
           id: 11,
           text: "Desea que se le refuerce el cielo raso?",
-          
+          checkboxFlag: true,
           options: [
             { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
             { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
@@ -215,6 +215,7 @@ const baseModelData = {
         {
           id: 12,
           text: "Desea que se le refuerce el cielo raso del segundo nivel?",
+          checkboxFlag: true,
           options: [
             { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
             { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
@@ -243,12 +244,18 @@ const model2AdditionalQuestions = {
     {
       id: 6,
       text: "¿Desea que coloque un mueble aéreo sobre el fregadero?",
-      options: [{ name: "Si" }, { name: "No" }],
+      options: [
+        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional-de-mueble-áereo-sobre-fregadero.png" }, 
+        { name: "No" }
+      ],
     },
     {
       id: 7,
       text: "¿Desea que coloque un mueble aéreo sobre la refrigeradora?",
-      options: [{ name: "Si" }, { name: "No" }],
+      options: [
+        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional de mueble áereo sobre refrigeradora.png" }, 
+        { name: "No" }
+      ],
     },
   ],
 };
@@ -291,6 +298,8 @@ export const modelsData = [
   {
     model: "Modelo_3",
     image: "/Naala_assets/base_bg.png",
-    categories: addPricesToModel("Modelo_3", deepClone(baseModelData.categories)),
+    categories: addPricesToModel("Modelo_3", 
+      mergeCategories(deepClone(baseModelData.categories), deepClone(model3AdditionalQuestions))
+    ),
   },
 ];

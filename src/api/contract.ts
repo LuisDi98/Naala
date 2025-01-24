@@ -9,6 +9,15 @@ export const downloadDocx = async (
   propietario: string
 ) => {
   try {
+    console.log("Datos enviados al servidor:", {
+      selectedOptions,
+      clientEmail,
+      fecha,
+      modelo,
+      propietario,
+      finca,
+    });
+    
     const response = await api.post(
       "/docx/generateDocx",
       { selectedOptions, clientEmail, fecha, finca, modelo, propietario },
@@ -16,13 +25,11 @@ export const downloadDocx = async (
         responseType: 'blob',
       }
     );
-    const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    });
+    const blob = new Blob([response.data], { type: "application/pdf" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `Contrato_${clientEmail}.docx`;
+    a.download = `Contrato_${clientEmail}.pdf`; // Cambiar extensión a .pdf
     document.body.appendChild(a);
     a.click();
     a.remove();

@@ -4,6 +4,8 @@ import {
   Flex,
   Text,
   VStack,
+  Checkbox,
+  CheckboxGroup
 } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "./../components/ui/radio";
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/accordion";
@@ -183,7 +185,7 @@ export default function ModelViewer() {
         </Box>
       </Flex>
 
-      <Footer totalPrice={totalPrice} selectedOptions={selectedOptions} clientEmail="aguilarluisdi@gmail.com" />
+      <Footer totalPrice={totalPrice} selectedOptions={selectedOptions} />
     </Flex>
   );
 }
