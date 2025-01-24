@@ -19,7 +19,7 @@ export default function PinInputField() {
       console.log(data);
 
       // Navigate to full URL when PIN is verified successfully
-      navigate(data.pin.modelo);
+      navigate('/'+data.pin.modelo);
     },
     onError: (error) => {
       console.error("Mutation error:", error);
