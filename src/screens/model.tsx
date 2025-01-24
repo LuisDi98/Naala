@@ -1,3 +1,8 @@
+// AÑADIDOS NUEVOS
+import { Tooltip } from "@/components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
+
+// IMPORTS EXISTENTES (MANTIENE TODO IGUAL)
 import {
   Box,
   Button,
@@ -24,12 +29,7 @@ export default function ModelViewer() {
   const modelName = pathname.split("/").pop();
   const model = modelsData.find((m) => m.model === modelName);
 
-  console.log("Modelo seleccionado:", model);
-
-  // Estado para almacenar la imagen de fondo actual
   const [bgImage, setBgImage] = useState(model?.image || "/Naala_assets/base_bg.png");
-
-  // Estado para las opciones seleccionadas y el precio total
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: { name: string; price: number } }>({});
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -49,7 +49,6 @@ export default function ModelViewer() {
     );
   }
 
-  // Manejar el cambio de opciones en los radio buttons
   const handleOptionChange = (selectedValue: string, question: any, questionOptions: any[]) => {
     const selectedOption = questionOptions.find(option => option.name === selectedValue);
     if (!selectedOption) return;
@@ -63,17 +62,14 @@ export default function ModelViewer() {
       updatedOptions[question.text] = { name: selectedOption.name, price: selectedOption.price };
       setTotalPrice((prevPrice) => prevPrice + selectedOption.price);
 
-      // Cambiar la imagen de fondo con animación
       if (selectedOption.image) {
         setBgImage(selectedOption.image);
       }
 
-      console.log("Opciones seleccionadas:", updatedOptions);
       return updatedOptions;
     });
   };
 
-  // Manejar el cambio de la categoría seleccionada en el acordeón
   const handleCategoryClick = (category: any) => {
     if (category.image) {
       setBgImage(category.image);
@@ -154,9 +150,22 @@ export default function ModelViewer() {
                     <Flex direction="column" gap={2}>
                       {category.questions.map((question, questionIndex) => (
                         <Box key={questionIndex} mb={4} p={4} bg="#F9F9F9" borderRadius="lg">
-                          <Text mb={4} fontWeight="bold" fontSize="lg">
-                            {question.text}
-                          </Text>
+                          {/* ÚNICO CAMBIO EN EL RENDERIZADO */}
+                          <Flex align="center" mb={4} gap={2}>
+                            <Text fontWeight="bold" fontSize="lg">
+                              {question.text}
+                            </Text>
+                            {question.tooltip && (
+                              <Tooltip content={question.tooltip.description}>
+                                <HelpCircle 
+                                  size={18} 
+                                  className="cursor-help text-gray-500 hover:text-gray-700" 
+                                />
+                              </Tooltip>
+                            )}
+                          </Flex>
+                          {/* FIN DE CAMBIO */}
+                          
                           <RadioGroup
                             key={"subtle"}
                             variant={"subtle"}
