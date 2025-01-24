@@ -1,16 +1,37 @@
 const addPricesToModel = (modelName: string, categories: any[]) => {
-  return categories.map((category: { questions: any[]; title : string }) => ({
+  return categories.map((category: { questions: any[]; title: string; image: string }) => ({
     ...category,
-    questions: category.questions.map((question: { options: any[]; text : string; id: string | number; }) => ({
+    image: category.image?.replace("<Model>", modelName) || category.image,
+    questions: category.questions.map((question: { options: any[]; text: string; id: string | number; }) => ({
       ...question,
-      options: question.options.map((option: { name: string; image: string; }) => ({
+      options: question.options.map((option: { name: string; image: string }) => ({
         ...option,
-        price: modelPricing[modelName][question.id][option.name] || 0, // Obtener precio de modelPricing
-        image: option.image || null, // Agregar imagen si existe
+        price: modelPricing[modelName][question.id][option.name] || 0,
+        image: option.image?.replace("<Model>", modelName) || option.image,
       })),
     })),
   }));
 };
+
+
+function mergeCategories(baseCategories: { title: string; questions: { id: number; text: string; options: ({ name: string; image: string; } | { name: string; image?: undefined; })[]; }[]; }[], additionalCategories: { title: string; questions: { id: number; text: string; options: { name: string; }[]; }[]; }) {
+  // Asegurarse de que additionalCategories es un array
+  const additionalCategoriesArray = Array.isArray(additionalCategories) ? additionalCategories : [additionalCategories];
+
+  const merged = [...baseCategories, ...additionalCategoriesArray].reduce((acc, category) => {
+      const existingCategory = acc.find((cat: { title: any; }) => cat.title === category.title);
+      if (existingCategory) {
+          // Combinar preguntas si la categoría ya existe
+          existingCategory.questions = existingCategory.questions.concat(category.questions);
+      } else {
+          // Agregar nueva categoría
+          acc.push(category);
+      }
+      return acc;
+  }, []);
+
+  return merged;
+}
 
 const model3Pricing = {
   1: { "Caramel": 0, "Roble Rustico": 0, "Roble provenza": 0 },
@@ -24,8 +45,9 @@ const model3Pricing = {
   9: { "Opcion 1": 0 },
   10: { "Opcion 1": 0 },
   11: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
-  12: { "Si": 747, "No": 0 },
-  13: { "Si": 841, "No": 0 },
+  12: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
+  13: { "Si": 747, "No": 0 },
+  14: { "Si": 841, "No": 0 },
 }
 
 // Diccionario de precios por modelo
@@ -42,8 +64,9 @@ const modelPricing : any = {
     9: { "Opcion 1": 0 },
     10: { "Opcion 1": 0 },
     11: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
-    12: { "Si": 747, "No": 0 },
-    13: { "Si": 841, "No": 0 },
+    12: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
+    13: { "Si": 747, "No": 0 },
+    14: { "Si": 841, "No": 0 },
   },
   Modelo_2: {
     1: { "Caramel": 0, "Roble Rustico": 0, "Roble provenza": 0 },
@@ -57,40 +80,36 @@ const modelPricing : any = {
     9: { "Opcion 1": 0 },
     10: { "Opcion 1": 0 },
     11: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
-    12: { "Si": 747, "No": 0 },
-    13: { "Si": 841, "No": 0 },
+    12: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
+    13: { "Si": 747, "No": 0 },
+    14: { "Si": 841, "No": 0 },
   },
-  Modelo_3A: {
+  Modelo_3: {
     ...model3Pricing,
   },
-  Modelo_3B: {
-    ...model3Pricing,
-  },
-  Modelo_3C: {
-    ...model3Pricing,
-  },
+  
 };
 
 const baseModelData = {
   categories: [
     {
       title: "Acabados de Muebles",
-      
+      image: "/Naala_assets/Acabados_de_Muebles/bg_4.png",
       questions: [
         {
           id: 1,
           text: "¿Qué tipo de acabados de muebles prefiere?",
           options: [
-            { name: "Caramel" },
-            { name: "Roble Rustico" },
-            { name: "Roble provenza"}
+            { name: "Caramel", image: "/Naala_assets/Acabados_de_Muebles/CARAMEL.jpg" },
+            { name: "Roble Rustico", image: "/Naala_assets/Acabados_de_Muebles/Roble Rustico.jpg" },
+            { name: "Roble provenza", image: "/Naala_assets/Acabados_de_Muebles/Roble Provenzal.jpeg"},
           ],
         },
         {
           id: 2,
           text: "Desea que se le empotre la plantilla y el horno?",
           options: [
-            { name: "Ambos" },
+            { name: "Ambos"},
             { name: "Ninguno" }
           ],
         },
@@ -98,21 +117,21 @@ const baseModelData = {
     },
     {
       title: "Previstas Eléctricas",
-      
+      image: "/Naala_assets/base_bg.png",
       questions: [
         {
           id: 3,
           text: "¿Desea añadir una linea neutro adicional?",
           options: [
-            { name: "Si" },
-            { name: "No" }
+            { name: "Si", image: "/Naala_assets/base_bg.png", },
+            { name: "No", image: "/Naala_assets/base_bg.png",}
           ],
         },
         {
           id: 4,
           text: "Desea una toma corriente de 220 v en la cochera?",
           options: [
-            { name: "Si" },
+            { name: "Si", image: "/Naala_assets/Previstas_Electricas/<Model>/Tomacorriente-220-adicional.png", },
             { name: "No" }
           ],
         },
@@ -120,7 +139,7 @@ const baseModelData = {
           id: 5,
           text: "Desea una salida de calor para la secadora?",
           options: [
-            { name: "Si" },
+            { name: "Si", image: "/Naala_assets/Previstas_Electricas/<Model>/Salida de aire caliente.png", },
             { name: "No" }
           ],
         }
@@ -128,73 +147,89 @@ const baseModelData = {
     },
     {
       title: "Acabados",
+      image: "/Naala_assets/base_bg.png",
       questions: [
         {
           id: 6,
           text: "Como desea el enchape del piso general?",
           options: [
-            { name: "Belen marfil", image: "/belen-marfil.jpg" },
-            { name: "Dessert blanco" }
+            { name: "Norwich Perla Mate", image: "/Naala_assets/Acabados/Norwich Perla Mate.jpg" },
+            { name: "Norwich Blanco Mate", image: "/Naala_assets/Acabados/Norwich Blanco Mate.jpg" },
+            { name: "Belen Marfil", image: "/Naala_assets/Acabados/Belen Marfil.jpg" },
           ],
         },
         {
           id: 7,
           text: "Como desea el enchape de piso de bano cuarto principal?",
           options: [
-            { name: "Liso neve satin" },
-            { name: "Space neve satin" }
+            { name: "Norwich Perla Mate", image: "/Naala_assets/Acabados/Norwich Perla Mate.jpg" },
+            { name: "Norwich Blanco Mate", image: "/Naala_assets/Acabados/Norwich Blanco Mate.jpg" },
+            { name: "Belen Marfil", image: "/Naala_assets/Acabados/Belen Marfil.jpg" },
           ],
         },
         {
           id: 8,
           text: "Como desea el enchape de piso de bano auxiliar?",
           options: [
-            { name: "Opcion 1" },
+            { name: "Norwich Perla Mate", image: "/Naala_assets/Acabados/Norwich Perla Mate.jpg" },
+            { name: "Norwich Blanco Mate", image: "/Naala_assets/Acabados/Norwich Blanco Mate.jpg" },
+            { name: "Belen Marfil", image: "/Naala_assets/Acabados/Belen Marfil.jpg" },
           ],
         },
         {
           id: 9,
           text: "Como desea el enchape de paredes de ducha de cuarto principal?",
           options: [
-            { name: "Opcion 1" },            ],
+            { name: "Beach Grey", image: "/Naala_assets/Acabados/Beach Gray.jpg" },
+            { name: "Malaya beige", image: "/Naala_assets/Acabados/Malaya beige.jpg" },
+            { name: "Absolute White", image: "/Naala_assets/Acabados/Absolute White.jpg" },           ],
         },
         {
           id: 10,
           text: "Como desea el enchape de paredes de ducha de bano auxiliar?",
           options: [
-            { name: "Opcion 1" },
+            { name: "Beach Grey", image: "/Naala_assets/Acabados/Beach Gray.jpg" },
+            { name: "Malaya beige", image: "/Naala_assets/Acabados/Malaya beige.jpg" },
+            { name: "Absolute White", image: "/Naala_assets/Acabados/Absolute White.jpg" },   
           ],
         }
       ]
     },
     {
       title: "Equipamiento",
+      
       questions: [
         {
           id: 11,
           text: "Desea que se le refuerce el cielo raso?",
+          checkboxFlag: true,
           options: [
-            { name: "Cuarto Principal" },
-            { name: "Isla" },
-            { name: "Sala primer nivel" },
-            { name: "Escaleras" },
-            { name: "Habitacion 1" },
-            { name: "Habitacion 2" },
+            { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
+            { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
+            { name: "Sala primer nivel", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
+            { name: "Escaleras", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
+            { name: "Habitacion 1", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
+            { name: "Habitacion 2", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
           ],
         },
         {
           id: 12,
-          text: "Desea que se le construya una bodega bajo las gradas?",
+          text: "Desea que se le refuerce el cielo raso del segundo nivel?",
+          checkboxFlag: true,
           options: [
-            { name: "Si" },
-            { name: "No" },
+            { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
+            { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
+            { name: "Sala primer nivel", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
+            { name: "Escaleras", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
+            { name: "Habitacion 1", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
+            { name: "Habitacion 2", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
           ],
         },
         {
           id: 13,
           text: "Desea que se le suministre un calentador de agua de 12 Kw?",
           options: [
-            { name: "Si" },
+            { name: "Si", image: "/Naala_assets/Equipamiento/<Model>/Calentador de agua.png" },
             { name: "No" },
           ],
         },
@@ -209,40 +244,62 @@ const model2AdditionalQuestions = {
     {
       id: 6,
       text: "¿Desea que coloque un mueble aéreo sobre el fregadero?",
-      options: [{ name: "Si" }, { name: "No" }],
+      options: [
+        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional-de-mueble-áereo-sobre-fregadero.png" }, 
+        { name: "No" }
+      ],
     },
     {
       id: 7,
       text: "¿Desea que coloque un mueble aéreo sobre la refrigeradora?",
-      options: [{ name: "Si" }, { name: "No" }],
+      options: [
+        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional de mueble áereo sobre refrigeradora.png" }, 
+        { name: "No" }
+      ],
     },
   ],
 };
 
+const model3AdditionalQuestions = {
+  title: "Equipamiento",
+  
+  questions: [
+    {
+      id: 14,
+      text: "Desea que se le construya una bodega bajo las gradas?",
+      options: [
+        { name: "Si", image: "" },
+        { name: "No", image: "" },
+      ],
+    }
+  ]
+}
+
+// Función para realizar una clonación profunda del objeto evitando modificar el original
+function deepClone(obj : any) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+// Modificación de la creación de los modelos para evitar compartir la misma referencia
 export const modelsData = [
   {
     model: "Modelo_1",
-    image: "/modelo-1.jpg",
-    categories: addPricesToModel("Modelo_1", baseModelData.categories),
+    image: "/Naala_assets/base_bg.png",
+    categories: addPricesToModel("Modelo_1", deepClone(baseModelData.categories)),
   },
   {
     model: "Modelo_2",
-    image: "/modelo-2.jpg",
-    categories: addPricesToModel("Modelo_2", [...baseModelData.categories, model2AdditionalQuestions]),
+    image: "/Naala_assets/base_bg.png",
+    categories: addPricesToModel(
+      "Modelo_2",
+      mergeCategories(deepClone(baseModelData.categories), deepClone(model2AdditionalQuestions))
+    ),
   },
   {
-    model: "Modelo_3A",
-    image: "/modelo-3.jpg",
-    categories: addPricesToModel("Modelo_3A", baseModelData.categories),
-  },
-  {
-    model: "Modelo_3B",
-    image: "/modelo-3.jpg",
-    categories: addPricesToModel("Modelo_3B", baseModelData.categories),
-  },
-  {
-    model: "Modelo_3C",
-    image: "/modelo-3.jpg",
-    categories: addPricesToModel("Modelo_3C", baseModelData.categories),
+    model: "Modelo_3",
+    image: "/Naala_assets/base_bg.png",
+    categories: addPricesToModel("Modelo_3", 
+      mergeCategories(deepClone(baseModelData.categories), deepClone(model3AdditionalQuestions))
+    ),
   },
 ];

@@ -1,4 +1,4 @@
-import BG from "../../assets/Naala_assets/bg-home.jpg";
+import BG from "/Naala_assets/bg-home.jpg";
 
 export default function Hero() {
   return (

@@ -5,7 +5,16 @@ import {
   Heading,
   Box,
   Input,
+  createListCollection
 } from "@chakra-ui/react";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@/components/ui/select"
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useMutation } from "@tanstack/react-query"; // Import useMutation
 import { generatePin } from "../api/pin"; // Import the API function
@@ -20,12 +29,22 @@ const CreatePin = () => {
   // Initialize form state with useFormSetter
   const [formState, setField] = useFormSetter({
     proyecto: "",
-    fincaFilial: "",
+    finca: "",
     modelo: "",
     nombre: "",
     cedula: "",
     telefono: "",
     correo: "",
+    adminPassword: "",
+  });
+  
+  const models = createListCollection({
+    items: [
+    { label: "Modelo tipo 1", value: "Modelo_1" },
+    { label: "Modelo tipo 2", value: "Modelo_2" },
+    { label: "Modelo tipo 3", value: "Modelo_3" },
+
+  ],
   });
 
   // useMutation for generating PIN
@@ -42,8 +61,19 @@ const CreatePin = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate(formState); // Call mutate directly with formState
+    
+    const adminSecretPass = import.meta.env.VITE_ADMIN_SECRET_PIN_PASS;
+    console.log("ADMIN_SECRET_PIN_PASS:", import.meta.env.VITE_ADMIN_SECRET_PIN_PASS);
+
+  
+    if (formState.adminPassword !== adminSecretPass) {
+      alert("Contraseña de administrador incorrecta. No puedes generar un pin.");
+      return;
+    }
+  
+    mutate(formState); // Llamar la mutación si la contraseña es correcta
   };
+  
 
   return (
     <Container maxW="md" py={8}>
@@ -66,22 +96,36 @@ const CreatePin = () => {
           <FormControl isRequired>
             <FormLabel>Finca Filial</FormLabel>
             <Input
-              name="fincaFilial"
+              name="finca"
               placeholder="Ingresa la Finca Filial"
-              value={formState.fincaFilial}
-              onChange={(e) => setField("fincaFilial")(e.target.value)}
+              value={formState.finca}
+              onChange={(e) => setField("finca")(e.target.value)}
             />
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Modelo</FormLabel>
-            <Input
-              name="modelo"
-              placeholder="Ingresa el modelo de casa"
-              value={formState.modelo}
-              onChange={(e) => setField("modelo")(e.target.value)}
-            />
-          </FormControl>
+          <SelectRoot
+            collection={models}
+            size="sm"
+            width="320px"
+            value={formState.modelo}
+            onValueChange={(value: any) => {
+              console.log("Modelo seleccionado:", value.value[0]);
+              setField("modelo")(value.value[0])}
+            }
+          >
+            <SelectLabel>Modelo</SelectLabel>
+            <SelectTrigger>
+              <SelectValueText placeholder="Modelo" />
+            </SelectTrigger>
+            <SelectContent>
+              {models.items.map((model) => (
+                <SelectItem item={model} key={model.value}>
+                  {model.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+
 
           <FormControl isRequired>
             <FormLabel>Nombre</FormLabel>
@@ -124,6 +168,18 @@ const CreatePin = () => {
               onChange={(e) => setField("correo")(e.target.value)}
             />
           </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel>Contraseña de administrador</FormLabel>
+            <Input
+              name="adminPassword"
+              placeholder="Ingrese la contraseña de administrador"
+              type="password"
+              value={formState.adminPassword}
+              onChange={(e) => setField("adminPassword")(e.target.value)}
+            />
+          </FormControl>
+
 
           <Box pt={4}>
             <Button
