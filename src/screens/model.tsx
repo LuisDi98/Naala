@@ -29,16 +29,7 @@ export default function ModelViewer() {
   const modelName = pathname.split("/").pop();
   const model = modelsData.find((m) => m.model === modelName);
 
-  // Estado para almacenar la imagen de fondo actual
-  const [bgImage, setBgImage] = useState("/Naala_assets/base_bg.png");
-
-  useEffect(() => {
-    if (model?.image) {
-      setBgImage(model.image);
-    }
-  }, [model]);
-
-  // Estado para las opciones seleccionadas y el precio total
+  const [bgImage, setBgImage] = useState(model?.image || "/Naala_assets/base_bg.png");
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: { name: string; price: number } }>({});
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -73,16 +64,12 @@ export default function ModelViewer() {
   
       // Actualizar con la nueva opción seleccionada
       updatedOptions[question.text] = { name: selectedOption.name, price: selectedOption.price };
-      newTotalPrice += selectedOption.price;
-  
-      // Actualizar el precio total después de aplicar los cambios
-      setTotalPrice(newTotalPrice);
-  
-      // Cambiar la imagen de fondo si existe
+      setTotalPrice((prevPrice) => prevPrice + selectedOption.price);
+
       if (selectedOption.image) {
         setBgImage(selectedOption.image);
       }
-  
+
       return updatedOptions;
     });
   };
