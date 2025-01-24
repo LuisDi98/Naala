@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 
 export default function PinInputField() {
   const navigate = useNavigate();
+
   const [pin, setPin] = useState(""); // State for storing the entered PIN
 
   // useMutation for verifying PIN
@@ -18,7 +19,7 @@ export default function PinInputField() {
       console.log(data);
 
       // Navigate to full URL when PIN is verified successfully
-      window.location.href = `http://localhost:5173/${data.modelo}`;
+      navigate(data.pin.modelo);
     },
     onError: (error) => {
       console.error("Mutation error:", error);

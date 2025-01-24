@@ -98,7 +98,7 @@ export default function ModelViewer() {
                           <RadioGroup
                           key={"subtle"}
                           variant={"subtle"}
-                          onChange={(event) => handleOptionChange(event.target.value, question, question.options)}
+                          onChange={(event : any) => handleOptionChange(event.target.value, question, question.options)}
                           >
                             <VStack gap="4" align="start">
                               {question.options.map((option, optionIndex) => (
@@ -123,7 +123,7 @@ export default function ModelViewer() {
         </Box>
       </Flex>
 
-      <Footer totalPrice={totalPrice} />
+      <Footer totalPrice={totalPrice} selectedOptions={selectedOptions} clientEmail="aguilarluisdi@gmail.com" />
     </Flex>
   );
 }

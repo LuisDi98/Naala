@@ -5,7 +5,16 @@ import {
   Heading,
   Box,
   Input,
+  createListCollection
 } from "@chakra-ui/react";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@/components/ui/select"
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useMutation } from "@tanstack/react-query"; // Import useMutation
 import { generatePin } from "../api/pin"; // Import the API function
@@ -26,6 +35,14 @@ const CreatePin = () => {
     cedula: "",
     telefono: "",
     correo: "",
+  });
+  const models = createListCollection({
+    items: [
+    { label: "Modelo tipo 1", value: "Modelo_1" },
+    { label: "Modelo tipo 2", value: "Modelo_2" },
+    { label: "Modelo tipo 3", value: "Modelo_3" },
+
+  ],
   });
 
   // useMutation for generating PIN
@@ -73,15 +90,29 @@ const CreatePin = () => {
             />
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Modelo</FormLabel>
-            <Input
-              name="modelo"
-              placeholder="Ingresa el modelo de casa"
-              value={formState.modelo}
-              onChange={(e) => setField("modelo")(e.target.value)}
-            />
-          </FormControl>
+          <SelectRoot
+            collection={models}
+            size="sm"
+            width="320px"
+            value={formState.modelo}
+            onValueChange={(value: any) => {
+              console.log("Modelo seleccionado:", value.value[0]);
+              setField("modelo")(value.value[0])}
+            }
+          >
+            <SelectLabel>Modelo</SelectLabel>
+            <SelectTrigger>
+              <SelectValueText placeholder="Modelo" />
+            </SelectTrigger>
+            <SelectContent>
+              {models.items.map((model) => (
+                <SelectItem item={model} key={model.value}>
+                  {model.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+
 
           <FormControl isRequired>
             <FormLabel>Nombre</FormLabel>
