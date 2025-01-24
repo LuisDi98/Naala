@@ -2,7 +2,7 @@ const addPricesToModel = (modelName: string, categories: any[]) => {
   return categories.map((category: { questions: any[]; title: string; image: string }) => ({
     ...category,
     image: category.image?.replace("<Model>", modelName) || category.image,
-    questions: category.questions.map((question: { options: any[]; text: string; id: string | number; }) => ({
+    questions: category.questions.map((question: { options: any[]; text: string; id: string | number }) => ({
       ...question,
       options: question.options.map((option: { name: string; image: string }) => ({
         ...option,
@@ -13,29 +13,25 @@ const addPricesToModel = (modelName: string, categories: any[]) => {
   }));
 };
 
-
-function mergeCategories(baseCategories: { title: string; questions: { id: number; text: string; options: ({ name: string; image: string; } | { name: string; image?: undefined; })[]; }[]; }[], additionalCategories: { title: string; questions: { id: number; text: string; options: { name: string; }[]; }[]; }) {
-  // Asegurarse de que additionalCategories es un array
+const mergeCategories = (
+  baseCategories: { title: string; questions: any[] }[],
+  additionalCategories: { title: string; questions: any[] }
+) => {
   const additionalCategoriesArray = Array.isArray(additionalCategories) ? additionalCategories : [additionalCategories];
-
-  const merged = [...baseCategories, ...additionalCategoriesArray].reduce((acc, category) => {
-      const existingCategory = acc.find((cat: { title: any; }) => cat.title === category.title);
-      if (existingCategory) {
-          // Combinar preguntas si la categoría ya existe
-          existingCategory.questions = existingCategory.questions.concat(category.questions);
-      } else {
-          // Agregar nueva categoría
-          acc.push(category);
-      }
-      return acc;
+  return [...baseCategories, ...additionalCategoriesArray].reduce((acc, category) => {
+    const existingCategory = acc.find((cat: { title: string }) => cat.title === category.title);
+    if (existingCategory) {
+      existingCategory.questions = existingCategory.questions.concat(category.questions);
+    } else {
+      acc.push(category);
+    }
+    return acc;
   }, []);
-
-  return merged;
-}
+};
 
 const model3Pricing = {
   1: { "Caramel": 0, "Roble Rustico": 0, "Roble provenza": 0 },
-  2: { "Ambos": 649,"Ninguno": 0 },
+  2: { "Ambos": 649, "Ninguno": 0 },
   3: { "Si": 174, "No": 0 },
   4: { "Si": 193, "No": 0 },
   5: { "Si": 207, "No": 0 },
@@ -48,13 +44,12 @@ const model3Pricing = {
   12: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
   13: { "Si": 747, "No": 0 },
   14: { "Si": 841, "No": 0 },
-}
+};
 
-// Diccionario de precios por modelo
-const modelPricing : any = {
+const modelPricing: any = {
   Modelo_1: {
     1: { "Caramel": 0, "Roble Rustico": 0, "Roble provenza": 0 },
-    2: { "Ambos": 649, "Ninguno": 0},
+    2: { "Ambos": 649, "Ninguno": 0 },
     3: { "Si": 98, "No": 0 },
     4: { "Si": 193, "No": 0 },
     5: { "Si": 207, "No": 0 },
@@ -84,10 +79,7 @@ const modelPricing : any = {
     13: { "Si": 747, "No": 0 },
     14: { "Si": 841, "No": 0 },
   },
-  Modelo_3: {
-    ...model3Pricing,
-  },
-  
+  Modelo_3: { ...model3Pricing },
 };
 
 const baseModelData = {
@@ -102,14 +94,17 @@ const baseModelData = {
           options: [
             { name: "Caramel", image: "/Naala_assets/Acabados_de_Muebles/CARAMEL.jpg" },
             { name: "Roble Rustico", image: "/Naala_assets/Acabados_de_Muebles/Roble Rustico.jpg" },
-            { name: "Roble provenza", image: "/Naala_assets/Acabados_de_Muebles/Roble Provenzal.jpeg"},
+            { name: "Roble provenza", image: "/Naala_assets/Acabados_de_Muebles/Roble Provenzal.jpeg" },
           ],
         },
         {
           id: 2,
           text: "Desea que se le empotre la plantilla y el horno?",
+          tooltip: {
+            description: "Buque y prevista para empotramiento: Se deja una prevista mediante un buque para el posterior empotramiento de los electrodomésticos. Ambos empotramientos deben realizarse juntos."
+          },
           options: [
-            { name: "Ambos"},
+            { name: "Ambos" },
             { name: "Ninguno" }
           ],
         },
@@ -122,24 +117,33 @@ const baseModelData = {
         {
           id: 3,
           text: "¿Desea añadir una linea neutro adicional?",
+          tooltip: {
+            description: "Línea neutro adicional: Se recomienda bajo los siguientes escenarios:\n7.1. Circuitos con alta carga: Si algunos circuitos tienen dispositivos de alto consumo energético.\n7.2. Reducción de interferencias: En sistemas con varios equipos de uso simultáneo."
+          },
           options: [
-            { name: "Si", image: "/Naala_assets/base_bg.png", },
-            { name: "No", image: "/Naala_assets/base_bg.png",}
+            { name: "Si", image: "/Naala_assets/base_bg.png" },
+            { name: "No", image: "/Naala_assets/base_bg.png" }
           ],
         },
         {
           id: 4,
           text: "Desea una toma corriente de 220 v en la cochera?",
+          tooltip: {
+            description: "Alimentación para vehículo eléctrico: Recomendado si necesitas una toma eléctrica de 240 V, ya sea para un vehículo eléctrico o equipos que lo requieran."
+          },
           options: [
-            { name: "Si", image: "/Naala_assets/Previstas_Electricas/<Model>/Tomacorriente-220-adicional.png", },
+            { name: "Si", image: "/Naala_assets/Previstas_Electricas/<Model>/Tomacorriente-220-adicional.png" },
             { name: "No" }
           ],
         },
         {
           id: 5,
           text: "Desea una salida de calor para la secadora?",
+          tooltip: {
+            description: "Salida para secadora: Ideal si planeas usar una secadora de ropa. Incluye un ducto metálico de 4 pulgadas para la salida del aire caliente."
+          },
           options: [
-            { name: "Si", image: "/Naala_assets/Previstas_Electricas/<Model>/Salida de aire caliente.png", },
+            { name: "Si", image: "/Naala_assets/Previstas_Electricas/<Model>/Salida de aire caliente.png" },
             { name: "No" }
           ],
         }
@@ -182,7 +186,8 @@ const baseModelData = {
           options: [
             { name: "Beach Grey", image: "/Naala_assets/Acabados/Beach Gray.jpg" },
             { name: "Malaya beige", image: "/Naala_assets/Acabados/Malaya beige.jpg" },
-            { name: "Absolute White", image: "/Naala_assets/Acabados/Absolute White.jpg" },           ],
+            { name: "Absolute White", image: "/Naala_assets/Acabados/Absolute White.jpg" },
+          ],
         },
         {
           id: 10,
@@ -190,19 +195,21 @@ const baseModelData = {
           options: [
             { name: "Beach Grey", image: "/Naala_assets/Acabados/Beach Gray.jpg" },
             { name: "Malaya beige", image: "/Naala_assets/Acabados/Malaya beige.jpg" },
-            { name: "Absolute White", image: "/Naala_assets/Acabados/Absolute White.jpg" },   
+            { name: "Absolute White", image: "/Naala_assets/Acabados/Absolute White.jpg" },
           ],
         }
       ]
     },
     {
       title: "Equipamiento",
-      
       questions: [
         {
           id: 11,
           text: "Desea que se le refuerce el cielo raso?",
           checkboxFlag: true,
+          tooltip: {
+            description: "Refuerzo en cielo raso: Recomendado para áreas donde se desee instalar luminarias pesadas, como lámparas colgantes o metálicas."
+          },
           options: [
             { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
             { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
@@ -216,6 +223,9 @@ const baseModelData = {
           id: 12,
           text: "Desea que se le refuerce el cielo raso del segundo nivel?",
           checkboxFlag: true,
+          tooltip: {
+            description: "Refuerzo en cielo raso: Recomendado para áreas donde se desee instalar luminarias pesadas, como lámparas colgantes o metálicas."
+          },
           options: [
             { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
             { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
@@ -228,6 +238,9 @@ const baseModelData = {
         {
           id: 13,
           text: "Desea que se le suministre un calentador de agua de 12 Kw?",
+          tooltip: {
+            description: "Calentador de agua: Recomendado para quienes deseen agua caliente mediante un tanque. Esta opción incluye un calentador instantáneo de 12 kW y la prevista necesaria."
+          },
           options: [
             { name: "Si", image: "/Naala_assets/Equipamiento/<Model>/Calentador de agua.png" },
             { name: "No" },
@@ -236,7 +249,7 @@ const baseModelData = {
       ]
     }
   ],
-}
+};
 
 const model2AdditionalQuestions = {
   title: "Acabados de Muebles",
@@ -245,7 +258,7 @@ const model2AdditionalQuestions = {
       id: 6,
       text: "¿Desea que coloque un mueble aéreo sobre el fregadero?",
       options: [
-        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional-de-mueble-áereo-sobre-fregadero.png" }, 
+        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional-de-mueble-áereo-sobre-fregadero.png" },
         { name: "No" }
       ],
     },
@@ -253,7 +266,7 @@ const model2AdditionalQuestions = {
       id: 7,
       text: "¿Desea que coloque un mueble aéreo sobre la refrigeradora?",
       options: [
-        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional de mueble áereo sobre refrigeradora.png" }, 
+        { name: "Si", image: "/Naala_assets/Acabados_de_Muebles/<Model>/Adicional de mueble áereo sobre refrigeradora.png" },
         { name: "No" }
       ],
     },
@@ -262,25 +275,25 @@ const model2AdditionalQuestions = {
 
 const model3AdditionalQuestions = {
   title: "Equipamiento",
-  
   questions: [
     {
       id: 14,
       text: "Desea que se le construya una bodega bajo las gradas?",
+      tooltip: {
+        description: "Bodega bajo las gradas: La selección de la bodega incluye un punto de luz y un tomacorriente de 120 V."
+      },
       options: [
         { name: "Si", image: "" },
         { name: "No", image: "" },
       ],
     }
   ]
+};
+
+function deepClone(obj: any) {
+  return JSON.parse(JSON.stringify(obj));
 }
 
-// Función para realizar una clonación profunda del objeto evitando modificar el original
-function deepClone(obj : any) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
-// Modificación de la creación de los modelos para evitar compartir la misma referencia
 export const modelsData = [
   {
     model: "Modelo_1",
