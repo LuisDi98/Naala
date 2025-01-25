@@ -61,24 +61,32 @@ export default function ModelViewer() {
   const handleOptionChange = (selectedValue: string, question: any, questionOptions: any[]) => {
     const selectedOption = questionOptions.find(option => option.name === selectedValue);
     if (!selectedOption) return;
-
+  
     setSelectedOptions((prevSelectedOptions) => {
       const updatedOptions = { ...prevSelectedOptions };
-      
+  
+      // Si la pregunta ya tenía una opción seleccionada, restar su precio del total antes de reemplazarla
+      let newTotalPrice = totalPrice;
       if (updatedOptions[question.text]) {
-        setTotalPrice((prevPrice) => prevPrice - updatedOptions[question.text].price);
+        newTotalPrice -= updatedOptions[question.text].price;
       }
-
+  
+      // Actualizar con la nueva opción seleccionada
       updatedOptions[question.text] = { name: selectedOption.name, price: selectedOption.price };
-      setTotalPrice((prevPrice) => prevPrice + selectedOption.price);
-
+      newTotalPrice += selectedOption.price;
+  
+      // Actualizar el precio total después de aplicar los cambios
+      setTotalPrice(newTotalPrice);
+  
+      // Cambiar la imagen de fondo si existe
       if (selectedOption.image) {
         setBgImage(selectedOption.image);
       }
-
+  
       return updatedOptions;
     });
   };
+  
 
   const handleCategoryClick = (category: any) => {
     if (category.image) {
