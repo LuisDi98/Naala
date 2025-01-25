@@ -12,6 +12,8 @@
   "dependencies": {
     "@chakra-ui/accordion": "^2.3.1",
     "@chakra-ui/form-control": "^2.2.0",
+    "@chakra-ui/layout": "^2.3.1",
+    "@chakra-ui/modal": "^2.3.1",
     "@chakra-ui/radio": "^2.1.2",
     "@chakra-ui/react": "^3.4.0",
     "@emotion/react": "^11.14.0",
@@ -32,12 +34,14 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
+    "react-modal": "^3.16.3",
     "react-router-dom": "^6.28.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@types/react-modal": "^3.16.3",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
