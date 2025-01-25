@@ -13,7 +13,7 @@ import { Expand, Minimize } from "lucide-react";
 import { Footer } from "../features/footer";
 import { useLocation } from "react-router-dom";
 import { modelsData } from "../data/form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const MotionImage = motion.img;
@@ -24,10 +24,14 @@ export default function ModelViewer() {
   const modelName = pathname.split("/").pop();
   const model = modelsData.find((m) => m.model === modelName);
 
-  console.log("Modelo seleccionado:", model);
-
   // Estado para almacenar la imagen de fondo actual
-  const [bgImage, setBgImage] = useState(model?.image || "/Naala_assets/base_bg.png");
+  const [bgImage, setBgImage] = useState("/Naala_assets/base_bg.png");
+
+  useEffect(() => {
+    if (model?.image) {
+      setBgImage(model.image);
+    }
+  }, [model]);
 
   // Estado para las opciones seleccionadas y el precio total
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: { name: string; price: number } }>({});
@@ -56,19 +60,18 @@ export default function ModelViewer() {
 
     setSelectedOptions((prevSelectedOptions) => {
       const updatedOptions = { ...prevSelectedOptions };
+      
       if (updatedOptions[question.text]) {
-        const prevOption = updatedOptions[question.text];
-        setTotalPrice((prevPrice) => prevPrice - prevOption.price);
+        setTotalPrice((prevPrice) => prevPrice - updatedOptions[question.text].price);
       }
+
       updatedOptions[question.text] = { name: selectedOption.name, price: selectedOption.price };
       setTotalPrice((prevPrice) => prevPrice + selectedOption.price);
 
-      // Cambiar la imagen de fondo con animación
       if (selectedOption.image) {
         setBgImage(selectedOption.image);
       }
 
-      console.log("Opciones seleccionadas:", updatedOptions);
       return updatedOptions;
     });
   };
@@ -167,7 +170,6 @@ export default function ModelViewer() {
                                 <Radio 
                                   key={optionIndex}
                                   value={String(option.name)}
-                                  onClick={() => setBgImage(option.image || model.image)}
                                 >
                                   <Text fontSize="lg">{option.name} - ${option.price}</Text>
                                 </Radio>
