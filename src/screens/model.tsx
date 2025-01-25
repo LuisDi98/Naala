@@ -9,9 +9,9 @@ import {
   Flex,
   Text,
   VStack,
-  Checkbox,
   CheckboxGroup
 } from "@chakra-ui/react";
+import { Checkbox } from "@/components/ui/checkbox"
 import { Radio, RadioGroup } from "./../components/ui/radio";
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from "@chakra-ui/accordion";
 import { Expand, Minimize } from "lucide-react";
@@ -39,7 +39,7 @@ export default function ModelViewer() {
   }, [model]);
 
   // Estado para las opciones seleccionadas y el precio total
-  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: { name: string; price: number } }>({});
+  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: [{ name: string; price: number }] }>({});
   const [totalPrice, setTotalPrice] = useState(0);
 
   const toggleZoom = () => {
@@ -61,30 +61,50 @@ export default function ModelViewer() {
   const handleOptionChange = (selectedValue: string, question: any, questionOptions: any[]) => {
     const selectedOption = questionOptions.find(option => option.name === selectedValue);
     if (!selectedOption) return;
-  
+
     setSelectedOptions((prevSelectedOptions) => {
       const updatedOptions = { ...prevSelectedOptions };
-  
-      // Si la pregunta ya tenía una opción seleccionada, restar su precio del total antes de reemplazarla
-      let newTotalPrice = totalPrice;
-      if (updatedOptions[question.text]) {
-        newTotalPrice -= updatedOptions[question.text].price;
-      }
-  
-      // Actualizar con la nueva opción seleccionada
-      updatedOptions[question.text] = { name: selectedOption.name, price: selectedOption.price };
-      newTotalPrice += selectedOption.price;
-  
-      // Actualizar el precio total después de aplicar los cambios
-      setTotalPrice(newTotalPrice);
-  
-      // Cambiar la imagen de fondo si existe
+      updatedOptions[question.text] = [{ name: selectedOption.name, price: selectedOption.price }];
+
+      updateTotalPrice(updatedOptions);
       if (selectedOption.image) {
         setBgImage(selectedOption.image);
       }
+
+      return updatedOptions;
+    });
+  };
+
+  const handleCheckboxChange = (option: any, isChecked: boolean, question: any) => {
+    setSelectedOptions((prevSelectedOptions) => {
+      const updatedOptions = { ...prevSelectedOptions };
+  
+      if (isChecked) {
+        // Añadir la opción seleccionada a la pregunta correspondiente
+        updatedOptions[question.text] = [...(updatedOptions[question.text] || []), { name: option.name, price: option.price }];
+      } else {
+        // Remover la opción deseleccionada
+        updatedOptions[question.text] = updatedOptions[question.text].filter((item) => item.name !== option.name);
+  
+        // Si no hay más opciones seleccionadas, eliminar la pregunta del mapa
+        if (updatedOptions[question.text].length === 0) {
+          delete updatedOptions[question.text];
+        }
+      }
+  
+      updateTotalPrice(updatedOptions);
+      console.log("Selected Options: ", updatedOptions);
   
       return updatedOptions;
     });
+  };
+  
+
+  const updateTotalPrice = (options: { [key: string]: { name: string; price: number }[] }) => {
+    const newTotalPrice = Object.values(options).reduce((total, optionArray) => {
+      return total + optionArray.reduce((acc, item) => acc + item.price, 0);
+    }, 0);
+    setTotalPrice(newTotalPrice);
   };
   
 
@@ -168,7 +188,6 @@ export default function ModelViewer() {
                     <Flex direction="column" gap={2}>
                       {category.questions.map((question, questionIndex) => (
                         <Box key={questionIndex} mb={4} p={4} bg="#F9F9F9" borderRadius="lg">
-                          {/* ÚNICO CAMBIO EN EL RENDERIZADO */}
                           <Flex align="center" mb={4} gap={2}>
                             <Text fontWeight="bold" fontSize="lg">
                               {question.text}
@@ -184,7 +203,25 @@ export default function ModelViewer() {
                           </Flex>
                           {/* FIN DE CAMBIO */}
                           
-                          <RadioGroup
+                          {question.checkboxFlag ? (
+                            <CheckboxGroup
+                            variant={"subtle"}
+                            >
+                            <VStack gap="4" align="start">
+                              {question.options.map((option, optionIndex) => (
+                                <Checkbox 
+                                key={optionIndex} 
+                                value={option.name}
+                                onCheckedChange={(event: any) => handleCheckboxChange(option, event.checked, question, question.options)}
+                                >
+                                  {option.name} - ${option.price}
+                                </Checkbox>
+                              ))}
+                            </VStack>
+                            </CheckboxGroup>
+                          
+                          ) : (
+                            <RadioGroup
                             key={"subtle"}
                             variant={"subtle"}
                             onChange={(event: any) => handleOptionChange(event.target.value, question, question.options)}
@@ -200,6 +237,7 @@ export default function ModelViewer() {
                               ))}
                             </VStack>
                           </RadioGroup>
+                          )}
                         </Box>
                       ))}
                     </Flex>

@@ -37,7 +37,7 @@ const customModalStyles = {
 
 interface FooterProps {
   totalPrice: number;
-  selectedOptions: { [key: string]: { name: string; price: number } };
+  selectedOptions: { [key: string]: [{ name: string; price: number }] };
 }
 
 export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
@@ -64,7 +64,7 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
     const clientEmail = correo;
     const propietario = nombre;
 
-    await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
+    //await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
     setIsAccepted(true);
   };
 
@@ -117,11 +117,15 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
               Por favor verificar y confirmar sus personalizaciones, una vez confirmado se generará el contrato.
             </Text>
             <VStack spacing={3} align="start">
-              {Object.entries(selectedOptions).map(([question, option], index) => (
+              {Object.entries(selectedOptions).map(([question, options], index) => (
                 <Box key={index} p={3} border="1px solid #ddd" borderRadius="md" w="100%">
                   <Text fontWeight="bold">{question}</Text>
-                  <Text>Opción: {option.name}</Text>
-                  <Text>Costo: ${option.price}</Text>
+                  {options.map((option, idx) => (
+                      <Box key={idx} ml={4}>
+                        <Text>Opción: {option.name}</Text>
+                        <Text>Costo: ${option.price.toLocaleString()}</Text>
+                      </Box>
+                    ))}
                 </Box>
               ))}
             </VStack>
@@ -160,11 +164,11 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
         <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginTop: "20px" }}>
           {!isAccepted && (
             <Button
-            bg="gray.200"
-            color="black"
-            _hover={{ bg: "green.300" }}
-            padding={5}
-            onClick={() => setIsModalOpen(false)}
+              bg="gray.200"
+              color="black"
+              _hover={{ bg: "green.300" }}
+              padding={5}
+              onClick={() => setIsModalOpen(false)}
             >
               Cancelar
             </Button>
@@ -172,27 +176,28 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
 
           {!isAccepted ? (
             <Button 
-            bg="green.400"
-            color="black"
-            _hover={{ bg: "green.500" }}
-            padding={5}
-            onClick={handleAcceptContract}
+              bg="green.400"
+              color="black"
+              _hover={{ bg: "green.500" }}
+              padding={5}
+              onClick={handleAcceptContract}
             >
               Finalizar Contrato
             </Button>
           ) : (
             <Button 
-            bg="blue.200"
-            color="black"
-            _hover={{ bg: "blue.400" }}
-            padding={5}
-            onClick={handleFinish}
+              bg="blue.200"
+              color="black"
+              _hover={{ bg: "blue.400" }}
+              padding={5}
+              onClick={handleFinish}
             >
               Listo
             </Button>
           )}
         </div>
       </Modal>
+
     </Box>
   );
 }
