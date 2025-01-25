@@ -73,12 +73,16 @@ export default function ModelViewer() {
   
       // Actualizar con la nueva opción seleccionada
       updatedOptions[question.text] = { name: selectedOption.name, price: selectedOption.price };
-      setTotalPrice((prevPrice) => prevPrice + selectedOption.price);
-
+      newTotalPrice += selectedOption.price;
+  
+      // Actualizar el precio total después de aplicar los cambios
+      setTotalPrice(newTotalPrice);
+  
+      // Cambiar la imagen de fondo si existe
       if (selectedOption.image) {
         setBgImage(selectedOption.image);
       }
-
+  
       return updatedOptions;
     });
   };
