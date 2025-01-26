@@ -1,7 +1,7 @@
 import api from "./api";
 // Asi se llama la funcion: await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
 export const downloadDocx = async (
-  selectedOptions: { [key: string]: { name: string; price: number } },
+  selectedOptions: { [key: string]: [{ name: string; price: number }] },
   clientEmail: string,
   fecha: string,
   finca: string,

@@ -64,7 +64,7 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
     const clientEmail = correo;
     const propietario = nombre;
 
-    //await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
+    await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
     setIsAccepted(true);
   };
 
