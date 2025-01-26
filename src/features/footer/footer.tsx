@@ -36,18 +36,23 @@ const customModalStyles = {
 
 
 interface FooterProps {
+  handleValidation: any
   totalPrice: number;
   selectedOptions: { [key: string]: [{ name: string; price: number }] };
 }
 
-export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
+export default function Footer({ handleValidation, totalPrice, selectedOptions }: FooterProps) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleValidationForm = () => {
+    if(handleValidation()){
+      setIsModalOpen(true)
+    }
+  }
+
   const handleAcceptContract = async () => {
-    console.log("Aceptando contrato...");
-    console.log("Opciones seleccionadas:", selectedOptions);
 
     const storedData = localStorage.getItem("pinData");
     if (!storedData) {
@@ -92,7 +97,7 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
               color="#fff"
               size="lg"
               p={2}
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {handleValidationForm()}}
             >
               Revisar
             </Button>

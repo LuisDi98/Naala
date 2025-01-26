@@ -129,6 +129,21 @@ export default function ModelViewer() {
     }
   };
 
+  const handleValidation = () => {
+    const requiredFields = model.categories.flatMap((category) =>
+      category.questions.filter((question) => !question.checkboxFlag).map((q) => q.text)
+    );
+  
+    const emptyFields = requiredFields.filter((field) => !selectedOptions[field]);
+  
+    if (emptyFields.length > 0) {
+      alert(`Por favor complete todas las opciones antes de continuar: \n- ${emptyFields.join("\n- ")}`);
+      return false;
+    }
+    return true;
+  };
+
+
   return (
     <Box>
       <Modal
@@ -290,7 +305,7 @@ export default function ModelViewer() {
           </Box>
         </Flex>
 
-        <Footer totalPrice={totalPrice} selectedOptions={selectedOptions} />
+        <Footer handleValidation={handleValidation} totalPrice={totalPrice} selectedOptions={selectedOptions} />
       </Flex>
     </Box>
   );
