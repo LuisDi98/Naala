@@ -1,3 +1,5 @@
+import api from "./api";
+
 export const generatePin = async (data:any) => {
   try {
       const response = await api.post("pins/generate", data);
