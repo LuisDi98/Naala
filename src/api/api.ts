@@ -1,11 +1,11 @@
-import axios from 'axios';
-//'https://naala-api-steel.vercel.app/api/'
+import axios from "axios";
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5500/api/',
-  timeout: 100000,
+  baseURL: "https://naala-api.vercel.app/api/",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
+  withCredentials: true,  // Asegura que se envían cookies y credenciales
 });
 
 export default api;
