@@ -1,25 +1,28 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { useState } from "react"
-import { Menu, X } from 'lucide-react'
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
     {
       href: "https://maps.app.goo.gl/CMRA6WFtrn2EDhQY6",
       text: "Ubicación",
+      isExternal: true,
     },
     {
       href: "modelos",
       text: "Modelos",
+      isExternal: false,
     },
     {
       href: "contacto",
       text: "Contacto",
+      isExternal: false,
     },
-  ]
+  ];
 
   return (
     <header className="w-full px-4 py-4 md:py-4 bg-black text-white">
@@ -27,7 +30,7 @@ export default function Header() {
         <Link to="/" className="text-2xl font-bold">
           <img width={150} src="/naala-logo.png" alt="" />
         </Link>
-        
+
         <button
           className="md:hidden p-2 text-white"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -41,30 +44,36 @@ export default function Header() {
             menuOpen ? "absolute inset-x-0 top-16 bg-black p-4 shadow-lg z-50" : "hidden"
           } md:flex`}
         >
-          {links.map(({ text, href }, index) => (
+          {links.map(({ text, href, isExternal }, index) => (
             <li key={index} className="w-full md:w-auto">
-              <ScrollLink
+              {isExternal ? (
+                <Link
+                  to={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block py-2 text-center text-lg hover:text-gray-400 transition"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {text}
+                </Link>
+              ) : (
+                <ScrollLink
                   to={href}
                   smooth={true}
                   duration={500}
                   spy={true}
                   offset={-70}
                   className="block py-2 text-center text-lg hover:text-gray-400 transition"
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "lg",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
+                  style={{ cursor: "pointer", fontSize: "lg", color: "white", fontWeight: "bold" }}
                   onClick={() => setMenuOpen(false)}
                 >
                   {text}
                 </ScrollLink>
+              )}
             </li>
           ))}
         </ul>
       </nav>
     </header>
-  )
+  );
 }
-
