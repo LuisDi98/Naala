@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { Link as ScrollLink } from "react-scroll";
 import { useState } from "react"
 import { Menu, X } from 'lucide-react'
 
@@ -11,11 +12,11 @@ export default function Header() {
       text: "Ubicación",
     },
     {
-      href: "/",
+      href: "modelos",
       text: "Modelos",
     },
     {
-      href: "#contacto",
+      href: "contacto",
       text: "Contacto",
     },
   ]
@@ -42,13 +43,23 @@ export default function Header() {
         >
           {links.map(({ text, href }, index) => (
             <li key={index} className="w-full md:w-auto">
-              <Link 
-                to={href} 
-                className="block py-2 text-center text-lg hover:text-gray-400 transition"
-                onClick={() => setMenuOpen(false)}
-              >
-                {text}
-              </Link>
+              <ScrollLink
+                  to={href}
+                  smooth={true}
+                  duration={500}
+                  spy={true}
+                  offset={-70}
+                  className="block py-2 text-center text-lg hover:text-gray-400 transition"
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "lg",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {text}
+                </ScrollLink>
             </li>
           ))}
         </ul>
