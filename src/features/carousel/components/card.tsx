@@ -1,6 +1,5 @@
-import { Button } from "@chakra-ui/react";
+import { Button, CardBody, CardFooter, CardHeader, CardRoot, Image, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Img from "../../../assets/Naala_assets/CASA_03_PLANTA_BAJA_1.png";
 
 interface PropertyCardProps {
   name: string;
@@ -9,31 +8,43 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ name, image }: PropertyCardProps) {
   return (
-    <div className="min-w-[33.33%] px-2" style={{ background: "#FFF" }}>
-      <div className="flex flex-col h-full bg-transparent rounded-lg overflow-hidden">
-        {/* Image Container */}
-        <div className="relative flex-1">
-          <img
-            src={image || "/placeholder.svg"}
-            alt={name}
-            className="w-full h-[400px] object-cover rounded-lg"
-          />
-          {/* Overlay with gradient */}
-          <div className="w-full h-full bg-gradient-to-t from-white/80 to-transparent rounded-lg" />
-        </div>
-        {/* Content Container */}
-        <div className="flex flex-col gap-4 p-4">
-        <h3 className="text-2xl font-bold text-black">{name.replace(/_/g, ' ')}</h3>
-          <div className="flex gap-4">
-            <Button className="flex-1 py-2 px-4 text-lg bg-[#edddc3] hover:bg-[#edddc3] text-stone-900 font-bold">
-              <Link to={`/pin`}>Personalizar</Link>
-            </Button>
-            <Button className="flex-1 py-2 px-4 text-lg border-[#000] border-2 text-black hover:bg-white/10 font-bold">
-              <Link to="/">Detalles</Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <CardRoot bg="white" boxShadow="lg" borderRadius="lg">
+      {/* Contenedor de Imagen */}
+      <CardHeader p={0}>
+        <Image 
+          src={image || "/placeholder.svg"} 
+          alt={name} 
+          maxH="425px"
+        />
+      </CardHeader>
+
+      <CardBody p={6} textAlign="center">
+        <Text fontSize="2xl" fontWeight="bold" color="black">
+          {name.replace(/_/g, " ")}
+        </Text>
+      </CardBody>
+
+      <CardFooter justifyContent="center" gap={4} pb={6}>
+        <Button 
+          flex="1" 
+          bgColor="#edddc3" 
+          _hover={{ bg: "#edddc3" }} 
+          color="stone.900" 
+          fontWeight="bold"
+        >
+          <Link to={`/pin`}>Personalizar</Link>
+        </Button>
+        <Button 
+          flex="1" 
+          border="2px" 
+          borderColor="black" 
+          color="black" 
+          _hover={{ bg: "gray.100" }} 
+          fontWeight="bold"
+        >
+          <Link to="/">Detalles</Link>
+        </Button>
+      </CardFooter>
+    </CardRoot>
   );
 }

@@ -60,11 +60,11 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
 
     const pinData = JSON.parse(storedData);
     const fecha = new Date().toLocaleDateString();
-    const { correo, modelo, nombre, finca } = pinData;
+    const { correo, modelo, nombre, finca, proyecto } = pinData;
     const clientEmail = correo;
     const propietario = nombre;
 
-    await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario);
+    await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario, proyecto);
     setIsAccepted(true);
   };
 

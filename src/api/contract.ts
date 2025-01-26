@@ -6,7 +6,8 @@ export const downloadDocx = async (
   fecha: string,
   finca: string,
   modelo: string,
-  propietario: string
+  propietario: string,
+  proyecto: string
 ) => {
   try {
     console.log("Datos enviados al servidor:", {
@@ -16,11 +17,12 @@ export const downloadDocx = async (
       modelo,
       propietario,
       finca,
+      proyecto
     });
     
     const response = await api.post(
       "/docx/generateDocx",
-      { selectedOptions, clientEmail, fecha, finca, modelo, propietario },
+      { selectedOptions, clientEmail, fecha, finca, modelo, propietario, proyecto },
       {
         responseType: 'blob',
       }

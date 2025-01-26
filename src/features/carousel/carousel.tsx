@@ -1,66 +1,33 @@
-"use client";
-
-import { useState, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Card } from "./";
+import { Box, Flex } from "@chakra-ui/react";
+import PropertyCard from "./components/card";
 import { modelsData } from "../../data/form";
 
 const properties = modelsData.map((model, index) => ({
   id: index + 1,
   name: model.model,
-  image: model.image
+  image: model.image,
 }));
+
 export default function CustomCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const next = useCallback(() => {
-    setCurrentIndex((currentIndex) =>
-      currentIndex === properties.length - 3 ? 0 : currentIndex + 1
-    );
-  }, []);
-
-  const prev = useCallback(() => {
-    setCurrentIndex((currentIndex) =>
-      currentIndex === 0 ? properties.length - 3 : currentIndex - 1
-    );
-  }, []);
-
   return (
-    <div className="w-full p-6">
-      <div className="max-w-7xl mx-auto relative">
-        <div className="overflow-hidden">
-          <div
-            className="flex transition-transform duration-300 ease-in-out gap-8"
-            style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}
+    <Box px={4} py={6}>
+      <Flex 
+        wrap="nowrap" 
+        overflowX="auto" 
+        gap={6} 
+        py={6}
+      >
+        {properties.map((property) => (
+          <Box 
+            key={property.id}
+            minW={{ base: "80%", sm: "60%", md: "40%", lg: "25%" }} 
+            maxW="400px"
           >
-            {properties.map((property) => (
-              <Card
-                key={property.id}
-                name={property.name}
-                image={property.image}
-                style={{ backgroundColor: 'white' }}
-              />
-            ))}
-          </div>
-        </div>
+            <PropertyCard name={property.name} image={property.image} />
+          </Box>
+        ))}
+      </Flex>
 
-    
-        <button
-          onClick={prev}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 w-10 h-10 flex items-center justify-center rounded-full border border-white bg-[#edddc3] text-black hover:bg-[#edddc3]"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft className="w-6 h-6"/>
-        </button>
-
-        <button
-          onClick={next}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 w-10 h-10 flex items-center justify-center rounded-full border border-white bg-[#edddc3] text-black hover:bg-[#edddc3]"
-          aria-label="Next slide"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      </div>
-    </div>
+    </Box>
   );
 }

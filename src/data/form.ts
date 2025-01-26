@@ -58,8 +58,8 @@ const modelPricing: any = {
     8: { "Opcion 1": 0 },
     9: { "Opcion 1": 0 },
     10: { "Opcion 1": 0 },
-    11: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
-    12: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
+    11: { "Sala primer nivel": 41, "Comedor": 41},
+    12: { "Cuarto Principal": 41, "Pasillo": 41, "Escaleras": 41 },
     13: { "Si": 747, "No": 0 },
     14: { "Si": 841, "No": 0 },
   },
@@ -74,7 +74,7 @@ const modelPricing: any = {
     8: { "Opcion 1": 0 },
     9: { "Opcion 1": 0 },
     10: { "Opcion 1": 0 },
-    11: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
+    11: { "Cuarto Principal": 41, "Comedor": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
     12: { "Cuarto Principal": 41, "Isla": 41, "Sala primer nivel": 41, "Escaleras": 41, "Habitacion 1": 41, "Habitacion 2": 41 },
     13: { "Si": 747, "No": 0 },
     14: { "Si": 841, "No": 0 },
@@ -205,18 +205,16 @@ const baseModelData = {
       questions: [
         {
           id: 11,
-          text: "Desea que se le refuerce el cielo raso?",
+          text: "Desea que se le refuerce el cielo raso del primer nivel?",
           checkboxFlag: true,
           tooltip: {
             description: "Refuerzo en cielo raso: Recomendado para áreas donde se desee instalar luminarias pesadas, como lámparas colgantes o metálicas."
           },
           options: [
-            { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
-            { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
+           
+            { name: "Comedor", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
             { name: "Sala primer nivel", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
-            { name: "Escaleras", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
-            { name: "Habitacion 1", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
-            { name: "Habitacion 2", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso.png" },
+            
           ],
         },
         {
@@ -228,11 +226,8 @@ const baseModelData = {
           },
           options: [
             { name: "Cuarto Principal", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
-            { name: "Isla", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
-            { name: "Sala primer nivel", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
-            { name: "Escaleras", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
-            { name: "Habitacion 1", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
-            { name: "Habitacion 2", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
+            { name: "Pasillo", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
+            { name: "Escalera", image: "/Naala_assets/Equipamiento/<Model>/Refuerzo en cielorraso 2do nivel.png" },
           ],
         },
         {
