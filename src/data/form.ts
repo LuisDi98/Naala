@@ -297,12 +297,12 @@ function deepClone(obj: any) {
 export const modelsData = [
   {
     model: "Modelo_1",
-    image: "/Naala_assets/base_bg.png",
+    image: "/modelo-1.jpg",
     categories: addPricesToModel("Modelo_1", deepClone(baseModelData.categories)),
   },
   {
     model: "Modelo_2",
-    image: "/Naala_assets/base_bg.png",
+    image: "/modelo-2.jpg",
     categories: addPricesToModel(
       "Modelo_2",
       mergeCategories(deepClone(baseModelData.categories), deepClone(model2AdditionalQuestions))
@@ -310,7 +310,7 @@ export const modelsData = [
   },
   {
     model: "Modelo_3",
-    image: "/Naala_assets/base_bg.png",
+    image: "/modelo-3.jpg",
     categories: addPricesToModel("Modelo_3", 
       mergeCategories(deepClone(baseModelData.categories), deepClone(model3AdditionalQuestions))
     ),
