@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   VStack,
   Container,
   Heading,
   Box,
   Input,
-  createListCollection
+  createListCollection,
+  Text
 } from "@chakra-ui/react";
 import {
   SelectContent,
@@ -16,17 +17,16 @@ import {
   SelectValueText,
 } from "@/components/ui/select"
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { useMutation } from "@tanstack/react-query"; // Import useMutation
-import { generatePin } from "../api/pin"; // Import the API function
-import useFormSetter from "../hooks/useFormSetter"; // Import the useFormSetter hook
+import { useMutation } from "@tanstack/react-query";
+import { generatePin } from "../api/pin";
+import useFormSetter from "../hooks/useFormSetter";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router";
 
-
-
 const CreatePin = () => {
   const navigate = useNavigate();
-  // Initialize form state with useFormSetter
+  const [error, setError] = useState<string | null>(null);
+  
   const [formState, setField] = useFormSetter({
     proyecto: "",
     finca: "",
@@ -37,51 +37,59 @@ const CreatePin = () => {
     correo: "",
     adminPassword: "",
   });
-  
+
   const models = createListCollection({
     items: [
-    { label: "Modelo tipo 1", value: "Modelo_1" },
-    { label: "Modelo tipo 2", value: "Modelo_2" },
-    { label: "Modelo tipo 3", value: "Modelo_3" },
-
-  ],
+      { label: "Modelo tipo 1", value: "Modelo_1" },
+      { label: "Modelo tipo 2", value: "Modelo_2" },
+      { label: "Modelo tipo 3", value: "Modelo_3" },
+    ],
   });
 
-  // useMutation for generating PIN
   const { mutate, isPending } = useMutation({
-    mutationFn: generatePin, // Ensure generatePin is a properly defined async function
+    mutationFn: generatePin,
     onSuccess: (data) => {
-      console.log("Mutation successful:", data);
       navigate("/pin");
     },
     onError: (error) => {
-      console.error("Mutation error:", error);
+      setError("Hubo un error generando el PIN. Intenta de nuevo.");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const adminSecretPass = import.meta.env.VITE_ADMIN_SECRET_PIN_PASS;
-    console.log("ADMIN_SECRET_PIN_PASS:", import.meta.env.VITE_ADMIN_SECRET_PIN_PASS);
+    setError(null);
 
-  
+    // Validación de campos vacíos
+    for (const key in formState) {
+      if (formState[key as keyof typeof formState].trim() === "") {
+        setError("Todos los campos son obligatorios. Por favor, complétalos.");
+        return;
+      }
+    }
+
+    const adminSecretPass = import.meta.env.VITE_ADMIN_SECRET_PIN_PASS;
     if (formState.adminPassword !== adminSecretPass) {
-      alert("Contraseña de administrador incorrecta. No puedes generar un pin.");
+      setError("Contraseña de administrador incorrecta. No puedes generar un PIN.");
       return;
     }
-  
-    mutate(formState); // Llamar la mutación si la contraseña es correcta
+
+    mutate(formState); 
   };
-  
 
   return (
     <Container maxW="md" py={8}>
       <form onSubmit={handleSubmit}>
         <VStack spacing={6} align="stretch">
-          <Heading as="h1" size="xl" textAlign="center" mb={6}>
-            Formulario para pin
+          <Heading fontSize={{ base: "3xl", md: "4xl", lg: "3xl" }} fontWeight="bold" textAlign="center" mb={6}>
+            Formulario para PIN
           </Heading>
+
+          {error && (
+            <Text color="red.500" textAlign="center" fontWeight="bold">
+              {error}
+            </Text>
+          )}
 
           <FormControl isRequired>
             <FormLabel>Proyecto</FormLabel>
@@ -103,29 +111,28 @@ const CreatePin = () => {
             />
           </FormControl>
 
-          <SelectRoot
-            collection={models}
-            size="sm"
-            width="320px"
-            value={formState.modelo}
-            onValueChange={(value: any) => {
-              console.log("Modelo seleccionado:", value.value[0]);
-              setField("modelo")(value.value[0])}
-            }
-          >
-            <SelectLabel>Modelo</SelectLabel>
-            <SelectTrigger>
-              <SelectValueText placeholder="Modelo" />
-            </SelectTrigger>
-            <SelectContent>
-              {models.items.map((model) => (
-                <SelectItem item={model} key={model.value}>
-                  {model.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
-
+          <FormControl isRequired>
+            <FormLabel>Modelo</FormLabel>
+            <SelectRoot
+              collection={models}
+              size="sm"
+              width="320px"
+              value={formState.modelo}
+              onValueChange={(value: any) => setField("modelo")(value.value[0])}
+            >
+              <SelectLabel>Selecciona un modelo</SelectLabel>
+              <SelectTrigger>
+                <SelectValueText placeholder="Selecciona un modelo" />
+              </SelectTrigger>
+              <SelectContent>
+                {models.items.map((model) => (
+                  <SelectItem item={model} key={model.value}>
+                    {model.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
+          </FormControl>
 
           <FormControl isRequired>
             <FormLabel>Nombre</FormLabel>
@@ -141,7 +148,7 @@ const CreatePin = () => {
             <FormLabel>Cédula</FormLabel>
             <Input
               name="cedula"
-              placeholder="Ingresa la Cédula del cliente"
+              placeholder="Ingresa la cédula del cliente"
               value={formState.cedula}
               onChange={(e) => setField("cedula")(e.target.value)}
             />
@@ -180,14 +187,13 @@ const CreatePin = () => {
             />
           </FormControl>
 
-
           <Box pt={4}>
             <Button
               type="submit"
               colorScheme="black"
               size="lg"
               width="full"
-              loading={isPending}
+              isLoading={isPending}
             >
               Generar Pin
             </Button>
