@@ -65,6 +65,7 @@ export default function Footer({ totalPrice, selectedOptions }: FooterProps) {
     const propietario = nombre;
 
     await downloadDocx(selectedOptions, clientEmail, fecha, finca, modelo, propietario, proyecto);
+    localStorage.removeItem("pinData");
     setIsAccepted(true);
   };
 
