@@ -21,7 +21,7 @@ export const downloadDocx = async (
     });
     
     const response = await api.post(
-      "/docx/generateDocx",
+      "/pins/generateDocx",
       { selectedOptions, clientEmail, fecha, finca, modelo, propietario, proyecto },
       {
         responseType: 'blob',
